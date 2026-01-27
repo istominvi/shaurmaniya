@@ -62,27 +62,27 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
             {product.weight && <span className="text-sm text-muted-foreground">{product.weight}</span>}
           </div>
           {totalQuantity > 0 ? (
-            <div className="flex h-8 w-full items-center justify-between rounded-md bg-primary px-0 text-primary-foreground">
+            <div className="flex h-9 w-full items-center justify-between rounded-md bg-white border border-border shadow-sm px-0 text-primary">
               <Button
                 onClick={handleDecrease}
-                size="icon-sm"
+                size="icon"
                 variant="ghost"
-                className="h-8 w-8 rounded-md p-0 text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground"
+                className="h-9 w-9 rounded-md p-0 text-primary hover:bg-accent hover:text-accent-foreground"
               >
                 <Minus className="h-4 w-4" />
               </Button>
-              <span className="text-sm font-semibold text-primary-foreground">{totalQuantity}</span>
+              <span className="text-sm font-semibold text-primary">{totalQuantity}</span>
               <Button
                 onClick={handleIncrease}
-                size="icon-sm"
+                size="icon"
                 variant="ghost"
-                className="h-8 w-8 rounded-md p-0 text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground"
+                className="h-9 w-9 rounded-md p-0 text-primary hover:bg-accent hover:text-accent-foreground"
               >
                 <Plus className="h-4 w-4" />
               </Button>
             </div>
           ) : (
-            <Button onClick={handleAdd} disabled={!product.available} size="sm" className="w-full">
+            <Button onClick={handleAdd} disabled={!product.available} className="w-full h-9">
               Выбрать
             </Button>
           )}
