@@ -31,10 +31,13 @@ export default function HomePage() {
     }
   }, [location])
 
-  const uniqueCategories = Array.from(new Set(products.map((p) => p.category))).map((cat) => ({
-    id: cat,
-    name: cat,
-  }))
+  const uniqueCategories = [
+    { id: "all", name: "Все" },
+    ...Array.from(new Set(products.map((p) => p.category))).map((cat) => ({
+      id: cat,
+      name: cat,
+    })),
+  ]
 
   const filteredProducts =
     selectedCategory === "all" ? products : products.filter((p) => p.category === selectedCategory)
