@@ -5,13 +5,11 @@ import https from 'https';
 import Papa from 'papaparse';
 
 // Define types locally to avoid import issues with ts-node
-type ProductCategory = string;
-
 interface Product {
   id: string;
   name: string;
   description: string;
-  category: ProductCategory;
+  category: string;
   image: string;
   basePrice: number;
   available: boolean;
