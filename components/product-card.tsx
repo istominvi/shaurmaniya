@@ -39,7 +39,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
 
   return (
     <div className="group flex h-full flex-col overflow-hidden rounded-xl bg-card transition-all hover:shadow-lg">
-      <div className="relative aspect-[4/3] w-full overflow-hidden">
+      <div className="relative aspect-square w-full overflow-hidden">
         <Image
           src={getAssetPath(product.image || "/placeholder.svg")}
           alt={product.name}
@@ -59,21 +59,21 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
         <div className="mt-auto flex flex-col gap-2 pt-2">
           <span className="whitespace-nowrap text-lg font-bold">{product.basePrice} ₽</span>
           {totalQuantity > 0 ? (
-            <div className="flex w-full items-center justify-between rounded-md bg-[#e53935]">
+            <div className="flex h-8 w-full items-center justify-between rounded-md bg-primary px-0 text-primary-foreground">
               <Button
                 onClick={handleDecrease}
-                size="sm"
+                size="icon-sm"
                 variant="ghost"
-                className="h-9 w-9 p-0 text-white hover:bg-[#c62828] hover:text-white"
+                className="h-8 w-8 rounded-md p-0 text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground"
               >
                 <Minus className="h-4 w-4" />
               </Button>
-              <span className="text-sm font-semibold text-white">{totalQuantity}</span>
+              <span className="text-sm font-semibold text-primary-foreground">{totalQuantity}</span>
               <Button
                 onClick={handleIncrease}
-                size="sm"
+                size="icon-sm"
                 variant="ghost"
-                className="h-9 w-9 p-0 text-white hover:bg-[#c62828] hover:text-white"
+                className="h-8 w-8 rounded-md p-0 text-primary-foreground hover:bg-primary-foreground/20 hover:text-primary-foreground"
               >
                 <Plus className="h-4 w-4" />
               </Button>
