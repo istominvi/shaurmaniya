@@ -3,6 +3,8 @@ import fs from 'fs';
 import path from 'path';
 import https from 'https';
 import Papa from 'papaparse';
+import sharp from 'sharp';
+import { pipeline } from 'stream';
 
 // Define types locally to avoid import issues with ts-node
 interface Product {
@@ -77,31 +79,37 @@ async function downloadImage(url: string, filepath: string): Promise<boolean> {
   }
 
   return new Promise((resolve) => {
-    const file = fs.createWriteStream(filepath);
     https.get(directUrl, (response) => {
       if (response.statusCode !== 200) {
         console.error(`[ERROR] Failed to download image ${directUrl}: Status ${response.statusCode}`);
         // Consume response data to free up memory
         response.resume();
-        fs.unlink(filepath, () => {}); // Delete partial file
         resolve(false);
         return;
       }
 
-      response.pipe(file);
+      // Create Sharp transformer
+      // Resize to width 800, maintain aspect ratio
+      // Convert to WebP with 80% quality
+      const transformer = sharp()
+        .resize({ width: 800, withoutEnlargement: true })
+        .webp({ quality: 80 });
 
-      file.on('finish', () => {
-        file.close(() => resolve(true));
+      const fileStream = fs.createWriteStream(filepath);
+
+      // Pipe the streams: response -> transformer -> file
+      pipeline(response, transformer, fileStream, (err) => {
+        if (err) {
+            console.error(`[ERROR] Error processing/saving image ${filepath}:`, err);
+            fs.unlink(filepath, () => {}); // Clean up partial file
+            resolve(false);
+        } else {
+            resolve(true);
+        }
       });
 
-      file.on('error', (err) => {
-        console.error(`[ERROR] Error writing file ${filepath}:`, err);
-        fs.unlink(filepath, () => {});
-        resolve(false);
-      });
     }).on('error', (err) => {
        console.error(`[ERROR] Request failed for ${directUrl}:`, err.message);
-       fs.unlink(filepath, () => {});
        resolve(false);
     });
   });
@@ -138,18 +146,12 @@ async function main() {
       let imagePath = originalImage; // Default to remote URL if download fails
 
       if (originalImage && originalImage.startsWith('http')) {
-         // Determine extension (default to jpg if unknown or drive link)
-         let ext = '.jpg';
-         if (originalImage.match(/\.(png|jpeg|webp)$/i)) {
-             // Basic extension extraction logic could be better but sufficient for now
-             // If url ends with .png, use .png
-         }
-
-         const filename = `${id}${ext}`;
+         // Force .webp extension
+         const filename = `${id}.webp`;
          const localFilePath = path.join(PUBLIC_PRODUCTS_DIR, filename);
          const publicPath = `/products/${filename}`;
 
-         console.log(`Downloading image for product ${id}...`);
+         console.log(`Downloading and optimizing image for product ${id}...`);
          const success = await downloadImage(originalImage, localFilePath);
 
          if (success) {
