@@ -17,10 +17,10 @@ export function CategoryTabs({ categories, selectedCategory, onCategoryChange }:
             <button
               key={category.id}
               onClick={() => onCategoryChange(category.id)}
-              className={`cursor-pointer rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+              className={`cursor-pointer rounded-md px-4 py-2 text-sm font-medium transition-colors border ${
                 selectedCategory === category.id
-                  ? "bg-[#e53935] text-white"
-                  : "bg-zinc-900 text-zinc-300 hover:bg-zinc-800 hover:text-white"
+                  ? "bg-zinc-200 text-black border-black"
+                  : "bg-white text-zinc-700 border-zinc-200 hover:bg-zinc-100 hover:text-black"
               }`}
             >
               {category.name}
