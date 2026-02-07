@@ -18,7 +18,7 @@ export function Header({ onCartClick, onLocationClick }: HeaderProps) {
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-white shadow-sm">
       <div className="w-full px-4 md:px-8 flex h-16 items-center justify-between">
         <div className="flex items-center">
           <Image
@@ -26,25 +26,25 @@ export function Header({ onCartClick, onLocationClick }: HeaderProps) {
             alt="Шаурмания"
             width={120}
             height={40}
-            className="h-8 w-auto"
+            className="h-8 w-auto brightness-0"
             priority
           />
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" onClick={onLocationClick} className="gap-2">
-            <MapPin className="h-4 w-4" />
-            <span className="hidden md:inline">{location?.type === "delivery" ? "Доставка" : "Самовывоз"}</span>
+          <Button variant="ghost" size="sm" onClick={onLocationClick} className="gap-2 text-black hover:bg-zinc-100">
+            <MapPin className="h-4 w-4 text-black" />
+            <span className="hidden md:inline text-black">{location?.type === "delivery" ? "Доставка" : "Самовывоз"}</span>
           </Button>
 
-          <Button variant="ghost" size="sm" onClick={onCartClick} className="relative gap-2">
-            <ShoppingBag className="h-5 w-5" />
+          <Button variant="ghost" size="sm" onClick={onCartClick} className="relative gap-2 text-black hover:bg-zinc-100">
+            <ShoppingBag className="h-5 w-5 text-black" />
             {itemCount > 0 && (
-              <Badge variant="destructive" className="absolute -right-1 -top-1 h-5 min-w-5 rounded-full p-0 text-xs">
+              <Badge variant="destructive" className="absolute -right-1 -top-1 h-5 min-w-5 rounded-full p-0 text-xs bg-white text-black border border-black">
                 {itemCount}
               </Badge>
             )}
-            <span className="hidden md:inline">Корзина</span>
+            <span className="hidden md:inline text-black">Корзина</span>
           </Button>
         </div>
       </div>
