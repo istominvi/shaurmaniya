@@ -26,13 +26,13 @@ export function Footer() {
   ]
 
   return (
-    <footer className="relative z-10 border-t border-border bg-background/95 backdrop-blur">
+    <footer className="relative z-10 border-t border-border bg-[#E73F22] text-white">
       <div className="w-full px-4 md:px-8 py-12">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {/* About Section */}
           <div>
             <h3 className="mb-4 text-lg font-semibold">О нас</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+            <p className="text-sm text-white/80 leading-relaxed">
               Шаурмания — сеть кафе быстрого питания в Чите. Мы готовим вкусную и качественную шаурму, бургеры и другие
               блюда по доступным ценам.
             </p>
@@ -41,17 +41,17 @@ export function Footer() {
           {/* Hours Section */}
           <div>
             <h3 className="mb-4 text-lg font-semibold">Время работы</h3>
-            <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="space-y-2 text-sm text-white/80">
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-primary" />
+                <Clock className="h-4 w-4 text-white" />
                 <span>Ул. Столярова, 83: с 10:00 до 23:00</span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-primary" />
+                <Clock className="h-4 w-4 text-white" />
                 <span>Ул. Красной Звезды, 70/1: с 10:00 до 23:00</span>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-primary" />
+                <Clock className="h-4 w-4 text-white" />
                 <span>Ул. Новобульварная, 92 киоск: с 10:00 до 23:00</span>
               </div>
             </div>
@@ -60,17 +60,17 @@ export function Footer() {
           {/* Contact Section */}
           <div>
             <h3 className="mb-4 text-lg font-semibold">Контакты</h3>
-            <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="space-y-2 text-sm text-white/80">
               <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-primary" />
+                <Phone className="h-4 w-4 text-white" />
                 <span>Ул. Столярова, 83: +7 (914) 510‒91‒80</span>
               </div>
               <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-primary" />
+                <Phone className="h-4 w-4 text-white" />
                 <span>Ул. Красной Звезды, 70/1: +7 (914) 515‒48‒46</span>
               </div>
               <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-primary" />
+                <Phone className="h-4 w-4 text-white" />
                 <span>Ул. Новобульварная, 92 киоск: +7 (914) 516‒96‒78</span>
               </div>
               <p className="leading-relaxed">
@@ -87,17 +87,17 @@ export function Footer() {
             {branches.map((branch, index) => (
               <div
                 key={index}
-                className="w-full rounded-lg border border-border bg-card p-6 shadow-sm transition-colors hover:bg-accent/50"
+                className="w-full rounded-lg border border-border bg-white text-black p-6 shadow-sm transition-colors hover:bg-white/90"
               >
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                   <div>
                     <h4 className="text-lg font-semibold">{branch.address}</h4>
-                    <p className="text-muted-foreground">{branch.info}</p>
+                    <p className="text-zinc-500">{branch.info}</p>
                   </div>
 
                   <div className="flex flex-col gap-3 md:items-end">
                     <div className="flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-primary" />
+                      <Phone className="h-4 w-4 text-[#E73F22]" />
                       <span className="font-medium">{branch.phone}</span>
                     </div>
                     <div className="flex gap-4 text-sm">
@@ -105,7 +105,7 @@ export function Footer() {
                         href={branch.link2gis}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-medium text-primary hover:underline"
+                        className="font-medium text-[#E73F22] hover:underline"
                       >
                         2Gis
                       </a>
@@ -113,7 +113,7 @@ export function Footer() {
                         href={branch.linkYandex}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="font-medium text-primary hover:underline"
+                        className="font-medium text-[#E73F22] hover:underline"
                       >
                         Яндекс Карты
                       </a>
@@ -126,7 +126,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-6 border-t border-border py-4 text-center text-sm text-muted-foreground">
+        <div className="mt-6 border-t border-white/20 py-4 text-center text-sm text-white/60">
           <p>© {new Date().getFullYear()} Шаурмания. Все права защищены.</p>
         </div>
       </div>

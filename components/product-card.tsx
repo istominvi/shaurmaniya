@@ -82,7 +82,11 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
               </Button>
             </div>
           ) : (
-            <Button onClick={handleAdd} disabled={!product.available} className="w-full h-9">
+            <Button
+              onClick={handleAdd}
+              disabled={!product.available}
+              className="w-full h-9 transition-colors active:bg-[#E73F22] active:text-white active:border-none"
+            >
               Выбрать
             </Button>
           )}
