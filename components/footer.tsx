@@ -1,4 +1,4 @@
-import { Phone, Clock } from "lucide-react"
+import { Phone, Clock, MapPin } from "lucide-react"
 
 export function Footer() {
   const branches = [
@@ -26,7 +26,7 @@ export function Footer() {
   ]
 
   return (
-    <footer className="relative z-10 border-t border-border bg-[#E73F22] text-white">
+    <footer className="relative z-10 bg-[#E73F22] text-white">
       <div className="w-full px-4 md:px-8 py-12">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {/* About Section */}
@@ -83,24 +83,25 @@ export function Footer() {
         {/* Branches Section */}
         <div className="mt-12">
           <h3 className="mb-6 text-xl font-semibold text-center">Наши филиалы</h3>
-          <div className="flex flex-col gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4">
             {branches.map((branch, index) => (
               <div
                 key={index}
-                className="w-full rounded-lg border border-border bg-white text-black p-6 shadow-sm transition-colors hover:bg-white/90"
+                className="group flex flex-col overflow-hidden rounded-xl border border-black bg-white text-black transition-all hover:shadow-lg h-full"
               >
-                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                  <div>
-                    <h4 className="text-lg font-semibold">{branch.address}</h4>
-                    <p className="text-zinc-500">{branch.info}</p>
-                  </div>
+                <div className="relative aspect-square w-full overflow-hidden bg-zinc-100 flex items-center justify-center rounded-xl">
+                  <MapPin className="h-8 w-8 text-[#E73F22]" />
+                </div>
+                <div className="flex flex-1 flex-col p-2">
+                  <h4 className="text-[10px] font-bold leading-tight line-clamp-2 mb-1">{branch.address}</h4>
+                  <p className="text-[9px] text-zinc-500 line-clamp-1 mb-2">{branch.info}</p>
 
-                  <div className="flex flex-col gap-3 md:items-end">
-                    <div className="flex items-center gap-2">
-                      <Phone className="h-4 w-4 text-[#E73F22]" />
-                      <span className="font-medium">{branch.phone}</span>
+                  <div className="mt-auto flex flex-col gap-1">
+                    <div className="flex items-center gap-1">
+                      <Phone className="h-2 w-2 text-[#E73F22]" />
+                      <span className="text-[9px] font-medium whitespace-nowrap">{branch.phone}</span>
                     </div>
-                    <div className="flex gap-4 text-sm">
+                    <div className="flex gap-2 text-[8px]">
                       <a
                         href={branch.link2gis}
                         target="_blank"
@@ -115,7 +116,7 @@ export function Footer() {
                         rel="noopener noreferrer"
                         className="font-medium text-[#E73F22] hover:underline"
                       >
-                        Яндекс Карты
+                        Яндекс
                       </a>
                     </div>
                   </div>
@@ -126,7 +127,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-6 border-t border-white/20 py-4 text-center text-sm text-white/60">
+        <div className="mt-6 py-4 text-center text-sm text-white/60">
           <p>© {new Date().getFullYear()} Шаурмания. Все права защищены.</p>
         </div>
       </div>
