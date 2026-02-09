@@ -38,7 +38,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
   }
 
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-black bg-card transition-all hover:shadow-lg">
+    <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:shadow-lg">
       <div className="relative aspect-square w-full overflow-hidden rounded-xl">
         <Image
           src={getAssetPath(product.image || "/placeholder.svg")}
@@ -55,8 +55,10 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
       </div>
       <div className="flex flex-1 flex-col p-3">
         <h3 className="text-base font-semibold leading-tight text-card-foreground">{product.name}</h3>
-        <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{product.description}</p>
-        <div className="mt-auto flex flex-col gap-2 pt-2">
+        {product.description && (
+          <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{product.description}</p>
+        )}
+        <div className="mt-auto flex flex-col gap-1 pt-1">
           <div className="flex items-center justify-between">
             <span className="whitespace-nowrap text-lg font-bold">{product.basePrice} ₽</span>
             {product.weight && <span className="text-sm text-muted-foreground">{product.weight}</span>}
@@ -85,7 +87,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
             <Button
               onClick={handleAdd}
               disabled={!product.available}
-              className="w-full h-9 transition-colors active:bg-[#E73F22] active:text-white active:border-none"
+              className="w-full h-9 transition-colors active:bg-[#E73F22] active:text-white active:border-none border-border shadow-sm"
             >
               Выбрать
             </Button>
