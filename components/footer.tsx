@@ -83,25 +83,22 @@ export function Footer() {
         {/* Branches Section */}
         <div className="mt-12">
           <h3 className="mb-6 text-xl font-semibold text-center">Наши филиалы</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {branches.map((branch, index) => (
               <div
                 key={index}
                 className="group flex flex-col overflow-hidden rounded-xl border border-black bg-white text-black transition-all hover:shadow-lg h-full"
               >
-                <div className="relative aspect-square w-full overflow-hidden bg-zinc-100 flex items-center justify-center rounded-xl">
-                  <MapPin className="h-8 w-8 text-[#E73F22]" />
-                </div>
-                <div className="flex flex-1 flex-col p-2">
-                  <h4 className="text-[10px] font-bold leading-tight line-clamp-2 mb-1">{branch.address}</h4>
-                  <p className="text-[9px] text-zinc-500 line-clamp-1 mb-2">{branch.info}</p>
+                <div className="flex flex-1 flex-col p-4">
+                  <h4 className="text-sm font-bold leading-tight line-clamp-2 mb-1">{branch.address}</h4>
+                  <p className="text-sm text-zinc-500 line-clamp-1 mb-2">{branch.info}</p>
 
                   <div className="mt-auto flex flex-col gap-1">
                     <div className="flex items-center gap-1">
-                      <Phone className="h-2 w-2 text-[#E73F22]" />
-                      <span className="text-[9px] font-medium whitespace-nowrap">{branch.phone}</span>
+                      <Phone className="h-4 w-4 text-[#E73F22]" />
+                      <span className="text-sm font-medium whitespace-nowrap">{branch.phone}</span>
                     </div>
-                    <div className="flex gap-2 text-[8px]">
+                    <div className="flex gap-2 text-sm">
                       <a
                         href={branch.link2gis}
                         target="_blank"
