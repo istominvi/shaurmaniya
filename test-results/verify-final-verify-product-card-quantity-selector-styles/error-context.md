@@ -1,0 +1,387 @@
+# Page snapshot
+
+```yaml
+- generic:
+  - generic:
+    - banner:
+      - generic:
+        - generic:
+          - img
+        - generic:
+          - button:
+            - img
+            - generic: Самовывоз
+          - button:
+            - img
+            - generic: Корзина
+    - generic:
+      - generic:
+        - generic:
+          - button: Все
+          - button: Кофе
+          - button: Шаурма большая
+          - button: Шаурма маленькая
+          - button: Кесадилья
+          - button: Буртуч
+          - button: Закуски
+    - main:
+      - generic:
+        - heading [level=2]: Все товары
+        - paragraph: Выберите товар для заказа
+      - generic:
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Эспрессо
+            - generic:
+              - generic:
+                - generic: 69 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Капучино
+            - generic:
+              - generic:
+                - generic: 99 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Американо
+            - generic:
+              - generic:
+                - generic: 79 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Латте
+            - generic:
+              - generic:
+                - generic: 109 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Большая Шаурма по-корейски
+            - generic:
+              - generic:
+                - generic: 379 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Большая Шаурма со свининой и сыром
+            - generic:
+              - generic:
+                - generic: 399 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Большая Шаурма со свининой и овощами
+            - generic:
+              - generic:
+                - generic: 379 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Большая Шаурма Деревенская
+            - generic:
+              - generic:
+                - generic: 399 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Большая Шаурма с курицей и сыром
+            - generic:
+              - generic:
+                - generic: 389 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Большая Шаурма с курицей и овощами
+            - generic:
+              - generic:
+                - generic: 369 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Большая Шаурма Овощная
+            - generic:
+              - generic:
+                - generic: 299 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Большая Шаурма Цезарь
+            - generic:
+              - generic:
+                - generic: 399 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Шаурма по-корейски
+            - generic:
+              - generic:
+                - generic: 289 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Шаурма со свининой и сыром
+            - generic:
+              - generic:
+                - generic: 299 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Шаурма со свининой и овощами
+            - generic:
+              - generic:
+                - generic: 289 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Шаурма Деревенская
+            - generic:
+              - generic:
+                - generic: 299 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Шаурма с курицей и сыром
+            - generic:
+              - generic:
+                - generic: 289 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Шаурма с курицей и овощами
+            - generic:
+              - generic:
+                - generic: 279 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Шаурма Овощная
+            - generic:
+              - generic:
+                - generic: 189 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Шаурма Цезарь
+            - generic:
+              - generic:
+                - generic: 299 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Кесадилья с курицей
+            - generic:
+              - generic:
+                - generic: 399 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Кесадилья со свининой
+            - generic:
+              - generic:
+                - generic: 399 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Буртуч
+            - generic:
+              - generic:
+                - generic: 399 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Картофель фри
+            - generic:
+              - generic:
+                - generic: 315 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Сырные палочки
+            - generic:
+              - generic:
+                - generic: 289 ₽
+              - button: Выбрать
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=3]: Наггетсы
+            - generic:
+              - generic:
+                - generic: 299 ₽
+              - button: Выбрать
+    - contentinfo:
+      - generic:
+        - generic:
+          - generic:
+            - heading [level=3]: О нас
+            - paragraph: Шаурмания — сеть кафе быстрого питания в Чите. Мы готовим вкусную и качественную шаурму, бургеры и другие блюда по доступным ценам.
+          - generic:
+            - heading [level=3]: Время работы
+            - generic:
+              - generic:
+                - img
+                - generic: "Ул. Столярова, 83: с 10:00 до 23:00"
+              - generic:
+                - img
+                - generic: "Ул. Красной Звезды, 70/1: с 10:00 до 23:00"
+              - generic:
+                - img
+                - generic: "Ул. Новобульварная, 92 киоск: с 10:00 до 23:00"
+          - generic:
+            - heading [level=3]: Контакты
+            - generic:
+              - generic:
+                - img
+                - generic: "Ул. Столярова, 83: +7 (914) 510‒91‒80"
+              - generic:
+                - img
+                - generic: "Ул. Красной Звезды, 70/1: +7 (914) 515‒48‒46"
+              - generic:
+                - img
+                - generic: "Ул. Новобульварная, 92 киоск: +7 (914) 516‒96‒78"
+              - paragraph: Оформите заказ через наш сайт, и мы доставим вашу шаурму горячей и свежей!
+        - generic:
+          - heading [level=3]: Наши филиалы
+          - generic:
+            - generic:
+              - generic:
+                - img
+              - generic:
+                - heading [level=4]: Улица Столярова, 83
+                - paragraph: Центральный район
+                - generic:
+                  - generic:
+                    - img
+                    - generic: +7 (914) 510‒91‒80
+                  - generic:
+                    - link:
+                      - /url: https://2gis.ru/chita/branches/70000001045033091/firm/70000001080660135/113.519281%2C52.031549?m=113.519281%2C52.031549%2F16
+                      - text: 2Gis
+                    - link:
+                      - /url: https://yandex.ru/maps/org/shaurmaniya/110852738462/?ll=113.519168%2C52.031486&z=16.95
+                      - text: Яндекс
+            - generic:
+              - generic:
+                - img
+              - generic:
+                - heading [level=4]: Улица Красной Звезды, 70/1
+                - paragraph: Северный м-н, Центральный район
+                - generic:
+                  - generic:
+                    - img
+                    - generic: +7 (914) 515‒48‒46
+                  - generic:
+                    - link:
+                      - /url: https://2gis.ru/chita/branches/70000001045033091/firm/70000001064444709/113.481655%2C52.076648?m=113.481655%2C52.076648%2F16
+                      - text: 2Gis
+                    - link:
+                      - /url: https://yandex.ru/maps/org/shaurmaniya/71390209311/?ll=113.481627%2C52.076665&z=16
+                      - text: Яндекс
+            - generic:
+              - generic:
+                - img
+              - generic:
+                - heading [level=4]: Улица Новобульварная, 92 киоск
+                - paragraph: Центральный район
+                - generic:
+                  - generic:
+                    - img
+                    - generic: +7 (914) 516‒96‒78
+                  - generic:
+                    - link:
+                      - /url: https://2gis.ru/chita/branches/70000001045033091/firm/70000001045033092/113.487478%2C52.055444?m=113.487478%2C52.055444%2F16
+                      - text: 2Gis
+                    - link:
+                      - /url: https://yandex.ru/maps/org/shaurma/99059296595/?indoorLevel=1&ll=113.485975%2C52.056147&z=16.95
+                      - text: Яндекс
+        - generic:
+          - paragraph: © 2026 Шаурмания. Все права защищены.
+  - alert
+  - dialog "Способ получения" [ref=e2]:
+    - generic [ref=e3]:
+      - heading "Способ получения" [level=2] [ref=e4]
+      - paragraph [ref=e5]: Выберите доставку или самовывоз
+    - generic [ref=e6]:
+      - radiogroup [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9] [cursor=pointer]:
+            - radio "Доставка" [checked] [active] [ref=e10]:
+              - img [ref=e11]
+            - generic [ref=e13]:
+              - generic [ref=e14]:
+                - img [ref=e15]
+                - text: Доставка
+              - paragraph [ref=e20]: Доставим по вашему адресу за 100 ₽
+          - generic [ref=e22] [cursor=pointer]:
+            - radio "Самовывоз" [ref=e23]
+            - generic [ref=e24]:
+              - generic [ref=e25]:
+                - img [ref=e26]
+                - text: Самовывоз
+              - paragraph [ref=e31]: Заберите заказ сами - бесплатно
+      - generic [ref=e32]:
+        - generic [ref=e33]:
+          - text: Адрес доставки
+          - generic [ref=e34]: "*"
+        - textbox "Адрес доставки *" [ref=e35]:
+          - /placeholder: ул. Ленина, 45, кв. 10
+        - paragraph [ref=e36]: Укажите улицу, дом, квартиру
+      - button "Сохранить" [disabled]
+    - button "Close" [ref=e37]:
+      - img
+      - generic [ref=e38]: Close
+```

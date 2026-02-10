@@ -64,21 +64,21 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
             {product.weight && <span className="text-sm text-muted-foreground">{product.weight}</span>}
           </div>
           {totalQuantity > 0 ? (
-            <div className="flex h-9 w-full items-center justify-between rounded-md bg-white border border-border shadow-sm px-0 text-primary">
+            <div className="flex h-9 w-full items-center justify-between rounded-md bg-[#E73F22] border border-transparent shadow-sm px-0 text-white">
               <Button
                 onClick={handleDecrease}
                 size="icon"
                 variant="ghost"
-                className="h-9 w-9 rounded-md p-0 text-primary hover:bg-accent hover:text-accent-foreground"
+                className="h-9 w-9 rounded-md p-0 text-white hover:bg-white/10 hover:text-white"
               >
                 <Minus className="h-4 w-4" />
               </Button>
-              <span className="text-sm font-semibold text-primary">{totalQuantity}</span>
+              <span className="text-sm font-semibold text-white">{totalQuantity}</span>
               <Button
                 onClick={handleIncrease}
                 size="icon"
                 variant="ghost"
-                className="h-9 w-9 rounded-md p-0 text-primary hover:bg-accent hover:text-accent-foreground"
+                className="h-9 w-9 rounded-md p-0 text-white hover:bg-white/10 hover:text-white"
               >
                 <Plus className="h-4 w-4" />
               </Button>
