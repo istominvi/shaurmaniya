@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { cn } from "@/lib/utils"
@@ -48,7 +49,7 @@ export function BannerCarousel() {
   }, [api])
 
   return (
-    <section className="bg-[#E73F22] py-4 overflow-hidden">
+    <section className="bg-[#E73F22] py-2">
       <Carousel
         setApi={setApi}
         opts={{
@@ -62,30 +63,56 @@ export function BannerCarousel() {
         ]}
         className="w-full"
       >
-        <CarouselContent className="-ml-2 md:-ml-4">
-          {BANNERS.map((banner) => (
-            <CarouselItem key={banner.id} className="pl-2 md:pl-4 basis-[82%] md:basis-[70%] lg:basis-[60%]">
-              <div className="relative aspect-[21/9] overflow-hidden rounded-2xl md:rounded-3xl shadow-lg border-2 border-white/10">
-                <Image
-                  src={banner.image}
-                  alt={banner.alt}
-                  fill
-                  className="object-cover"
-                  priority={banner.id === 1}
-                />
-              </div>
+        <CarouselContent
+          className="-ml-2 md:-ml-4"
+          viewportClassName="py-5 -my-5"
+        >
+          {BANNERS.map((banner, index) => (
+            <CarouselItem
+              key={banner.id}
+              className="pl-2 md:pl-4 basis-[82%] md:basis-[70%] lg:basis-[60%] cursor-pointer"
+              onClick={() => {
+                if (!api) return
+                if (index === (current - 1 + BANNERS.length) % BANNERS.length) {
+                  api.scrollPrev()
+                } else if (index === (current + 1) % BANNERS.length) {
+                  api.scrollNext()
+                }
+              }}
+            >
+              <Link
+                href="#"
+                className="block cursor-pointer h-full"
+                onClick={(e) => {
+                  if (current !== index) {
+                    e.preventDefault()
+                  }
+                }}
+              >
+                <div className="relative aspect-[21/9] rounded-2xl md:rounded-3xl shadow-xl">
+                  <div className="absolute inset-0 overflow-hidden rounded-2xl md:rounded-3xl border-2 border-white/10">
+                    <Image
+                      src={banner.image}
+                      alt={banner.alt}
+                      fill
+                      className="object-cover"
+                      priority={banner.id === 1}
+                    />
+                  </div>
+                </div>
+              </Link>
             </CarouselItem>
           ))}
         </CarouselContent>
       </Carousel>
 
       {/* Navigation Dots */}
-      <div className="flex justify-center gap-2 mt-4">
+      <div className="flex justify-center gap-2 mt-4 pb-2">
         {Array.from({ length: count }).map((_, index) => (
           <button
             key={index}
             className={cn(
-              "h-1.5 rounded-full transition-all duration-300",
+              "h-1.5 rounded-full transition-all duration-300 cursor-pointer",
               current === index ? "w-8 bg-white" : "w-1.5 bg-white/40"
             )}
             onClick={() => api?.scrollTo(index)}
