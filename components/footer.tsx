@@ -87,7 +87,7 @@ export function Footer() {
             {branches.map((branch, index) => (
               <div
                 key={index}
-                className="group flex flex-col overflow-hidden rounded-xl border border-black bg-white text-black transition-all hover:shadow-lg h-full"
+                className="group flex flex-col overflow-hidden rounded-xl bg-white text-black transition-all hover:shadow-lg h-full"
               >
                 <div className="flex flex-1 flex-col p-4">
                   <h4 className="text-sm font-bold leading-tight line-clamp-2 mb-1">{branch.address}</h4>
@@ -124,7 +124,7 @@ export function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-6 py-4 text-center text-sm text-white/60">
+        <div className="mt-6 py-2 text-center text-sm text-white/60">
           <p>© {new Date().getFullYear()} Шаурмания. Все права защищены.</p>
         </div>
       </div>
