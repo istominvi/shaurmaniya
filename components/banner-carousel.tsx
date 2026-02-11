@@ -63,14 +63,11 @@ export function BannerCarousel() {
         ]}
         className="w-full"
       >
-        <CarouselContent
-          className="-ml-2 md:-ml-4"
-          viewportClassName="py-5 -my-5"
-        >
+        <CarouselContent className="-ml-2">
           {BANNERS.map((banner, index) => (
             <CarouselItem
               key={banner.id}
-              className="pl-2 md:pl-4 basis-[82%] md:basis-[70%] lg:basis-[60%] cursor-pointer"
+              className="pl-2 basis-[82%] md:basis-[70%] lg:basis-[60%] cursor-pointer"
               onClick={() => {
                 if (!api) return
                 if (index === (current - 1 + BANNERS.length) % BANNERS.length) {
@@ -89,8 +86,8 @@ export function BannerCarousel() {
                   }
                 }}
               >
-                <div className="relative aspect-[21/9] rounded-2xl md:rounded-3xl shadow-xl">
-                  <div className="absolute inset-0 overflow-hidden rounded-2xl md:rounded-3xl border-2 border-white/10">
+                <div className="relative aspect-[21/9] rounded-2xl md:rounded-3xl">
+                  <div className="absolute inset-0 overflow-hidden rounded-2xl md:rounded-3xl">
                     <Image
                       src={banner.image}
                       alt={banner.alt}
@@ -107,7 +104,7 @@ export function BannerCarousel() {
       </Carousel>
 
       {/* Navigation Dots */}
-      <div className="flex justify-center gap-2 mt-4 pb-2">
+      <div className="flex justify-center gap-2 mt-2">
         {Array.from({ length: count }).map((_, index) => (
           <button
             key={index}
