@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   keywords: ["шаурма", "доставка", "Чита", "еда", "fast food", "шаурма чита"],
   authors: [{ name: "Шаурмания" }],
   icons: {
-    icon: getAssetPath("/images/favicon.png"),
-    apple: getAssetPath("/images/favicon.png"),
+    icon: getAssetPath("/images/favicon.svg"),
+    apple: getAssetPath("/images/favicon.svg"),
   },
   manifest: "/manifest.json",
   appleWebApp: {

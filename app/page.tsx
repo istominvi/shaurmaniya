@@ -65,15 +65,6 @@ export default function HomePage() {
       />
 
       <main className="w-full px-4 md:px-8 relative z-10 py-8">
-        <div className="mb-6">
-          <h2 className="text-3xl font-bold tracking-tight">
-            {selectedCategory === "all"
-              ? "Все товары"
-              : products.find((p) => p.category === selectedCategory)?.category}
-          </h2>
-          <p className="mt-1 text-muted-foreground">Выберите товар для заказа</p>
-        </div>
-
         <ProductGrid products={filteredProducts} onProductClick={handleProductClick} />
       </main>
 

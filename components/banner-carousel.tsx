@@ -86,7 +86,7 @@ export function BannerCarousel() {
                   }
                 }}
               >
-                <div className="relative aspect-[21/9] rounded-2xl md:rounded-3xl">
+                <div className="relative aspect-[21/9] rounded-2xl md:rounded-3xl bg-white">
                   <div className="absolute inset-0 overflow-hidden rounded-2xl md:rounded-3xl">
                     <Image
                       src={banner.image}
