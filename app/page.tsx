@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
+import { BannerCarousel } from "@/components/banner-carousel"
 import { CategoryTabs } from "@/components/category-tabs"
 import { ProductGrid } from "@/components/product-grid"
 import { ProductConfigurator } from "@/components/product-configurator"
@@ -56,6 +57,7 @@ export default function HomePage() {
       <CharcoalSparks />
 
       <Header onCartClick={() => setIsCartOpen(true)} onLocationClick={() => setIsLocationOpen(true)} />
+      <BannerCarousel />
       <CategoryTabs
         categories={uniqueCategories}
         selectedCategory={selectedCategory}
