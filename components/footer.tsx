@@ -1,4 +1,4 @@
-import { Phone, Clock, MapPin } from "lucide-react"
+import { Phone, Clock, MapPin, ExternalLink } from "lucide-react"
 import branchesData from "@/lib/branches.json"
 
 interface Branch {
@@ -66,49 +66,47 @@ export function Footer() {
                 className="group flex flex-col overflow-hidden rounded-xl bg-white text-black transition-all hover:shadow-lg h-full"
               >
                 <div className="flex flex-1 flex-col p-4">
-                  <h4 className="text-sm font-bold leading-tight line-clamp-2 mb-1">{branch.address}</h4>
-                  <p className="text-sm text-zinc-500 mb-1">{branch.district}</p>
-                  <p className="text-sm text-zinc-500 mb-2">{branch.schedule}</p>
-
-                  <div className="space-y-2 mb-3">
+                  <div className="space-y-3">
                     <div className="flex items-start gap-2 text-sm text-zinc-600">
                       <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-[#E73F22]" />
-                      <span>{branch.district}</span>
+                      <div className="min-w-0">
+                        <h4 className="text-sm font-bold leading-tight line-clamp-2 text-black">{branch.address}</h4>
+                        <p className="mt-1 pl-0 text-sm text-zinc-500">{branch.district}</p>
+                      </div>
                     </div>
                     <div className="flex items-start gap-2 text-sm text-zinc-600">
                       <Clock className="h-4 w-4 mt-0.5 shrink-0 text-[#E73F22]" />
                       <span>{branch.schedule}</span>
                     </div>
-                  </div>
-
-                  <div className="mt-auto flex flex-col gap-3">
                     <div className="flex items-center gap-2">
                       <Phone className="h-4 w-4 shrink-0 text-[#E73F22]" />
-                      <span className="text-sm font-medium">{branch.phone}</span>
+                      <span className="text-sm text-zinc-700">{branch.phone}</span>
                     </div>
+                  </div>
 
-                    <div className="flex flex-wrap gap-2 text-sm">
-                      {branch.link2gis && (
-                        <a
-                          href={branch.link2gis}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="rounded-md border border-zinc-200 bg-white px-3 py-1.5 font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
-                        >
-                          2Gis
-                        </a>
-                      )}
-                      {branch.linkYandex && (
-                        <a
-                          href={branch.linkYandex}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="rounded-md border border-zinc-200 bg-white px-3 py-1.5 font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
-                        >
-                          Яндекс
-                        </a>
-                      )}
-                    </div>
+                  <div className="mt-auto flex flex-wrap gap-2 pt-3 text-sm">
+                    {branch.link2gis && (
+                      <a
+                        href={branch.link2gis}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="relative rounded-md border border-zinc-200 bg-white px-3 py-1.5 pr-6 font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
+                      >
+                        2Gis
+                        <ExternalLink className="absolute right-2 top-1.5 h-3 w-3 text-zinc-400" />
+                      </a>
+                    )}
+                    {branch.linkYandex && (
+                      <a
+                        href={branch.linkYandex}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="relative rounded-md border border-zinc-200 bg-white px-3 py-1.5 pr-6 font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
+                      >
+                        Яндекс
+                        <ExternalLink className="absolute right-2 top-1.5 h-3 w-3 text-zinc-400" />
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
