@@ -66,7 +66,9 @@ export function Footer() {
                 className="group flex flex-col overflow-hidden rounded-xl bg-white text-black transition-all hover:shadow-lg h-full"
               >
                 <div className="flex flex-1 flex-col p-4">
-                  <h4 className="text-sm font-bold leading-tight line-clamp-2 mb-3">{branch.address}</h4>
+                  <h4 className="text-sm font-bold leading-tight line-clamp-2 mb-1">{branch.address}</h4>
+                  <p className="text-sm text-zinc-500 mb-1">{branch.district}</p>
+                  <p className="text-sm text-zinc-500 mb-2">{branch.schedule}</p>
 
                   <div className="space-y-2 mb-3">
                     <div className="flex items-start gap-2 text-sm text-zinc-600">
