@@ -1,4 +1,4 @@
-import { Phone, Clock } from "lucide-react"
+import { Phone, Clock, MapPin } from "lucide-react"
 import branchesData from "@/lib/branches.json"
 
 interface Branch {
@@ -33,7 +33,9 @@ export function Footer() {
               {branches.slice(0, 3).map((branch) => (
                 <div key={`hours-${branch.address}`} className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-white" />
-                  <span>{branch.address}: {branch.schedule || "Уточняйте по телефону"}</span>
+                  <span>
+                    {branch.address}: {branch.schedule || "Уточняйте по телефону"}
+                  </span>
                 </div>
               ))}
             </div>
@@ -49,9 +51,7 @@ export function Footer() {
                   <span>{branch.address}: {branch.phone}</span>
                 </div>
               ))}
-              <p className="leading-relaxed">
-                Оформите заказ через наш сайт, и мы доставим вашу шаурму горячей и свежей!
-              </p>
+              <p className="leading-relaxed">Оформите заказ через наш сайт, и мы доставим вашу шаурму горячей и свежей!</p>
             </div>
           </div>
         </div>
@@ -59,7 +59,7 @@ export function Footer() {
         {/* Branches Section */}
         <div className="mt-12">
           <h3 className="mb-6 text-xl font-semibold text-center">Наши филиалы</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4">
             {branches.map((branch, index) => (
               <div
                 key={`${branch.address}-${index}`}
@@ -70,18 +70,30 @@ export function Footer() {
                   <p className="text-sm text-zinc-500 mb-1">{branch.district}</p>
                   <p className="text-sm text-zinc-500 mb-2">{branch.schedule}</p>
 
-                  <div className="mt-auto flex flex-col gap-1">
-                    <div className="flex items-center gap-1">
-                      <Phone className="h-4 w-4 text-[#E73F22]" />
-                      <span className="text-sm font-medium whitespace-nowrap">{branch.phone}</span>
+                  <div className="space-y-2 mb-3">
+                    <div className="flex items-start gap-2 text-sm text-zinc-600">
+                      <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-[#E73F22]" />
+                      <span>{branch.district}</span>
                     </div>
-                    <div className="flex gap-2 text-sm">
+                    <div className="flex items-start gap-2 text-sm text-zinc-600">
+                      <Clock className="h-4 w-4 mt-0.5 shrink-0 text-[#E73F22]" />
+                      <span>{branch.schedule}</span>
+                    </div>
+                  </div>
+
+                  <div className="mt-auto flex flex-col gap-3">
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 shrink-0 text-[#E73F22]" />
+                      <span className="text-sm font-medium">{branch.phone}</span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 text-sm">
                       {branch.link2gis && (
                         <a
                           href={branch.link2gis}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="font-medium text-[#E73F22] hover:underline"
+                          className="rounded-md border border-zinc-200 bg-white px-3 py-1.5 font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
                         >
                           2Gis
                         </a>
@@ -91,7 +103,7 @@ export function Footer() {
                           href={branch.linkYandex}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="font-medium text-[#E73F22] hover:underline"
+                          className="rounded-md border border-zinc-200 bg-white px-3 py-1.5 font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
                         >
                           Яндекс
                         </a>
