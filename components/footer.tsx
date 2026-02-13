@@ -1,29 +1,17 @@
 import { Phone, Clock, MapPin } from "lucide-react"
+import branchesData from "@/lib/branches.json"
+
+interface Branch {
+  address: string
+  district: string
+  phone: string
+  schedule: string
+  link2gis: string
+  linkYandex: string
+}
 
 export function Footer() {
-  const branches = [
-    {
-      address: "Улица Столярова, 83",
-      info: "Центральный район",
-      phone: "+7 (914) 510‒91‒80",
-      link2gis: "https://2gis.ru/chita/branches/70000001045033091/firm/70000001080660135/113.519281%2C52.031549?m=113.519281%2C52.031549%2F16",
-      linkYandex: "https://yandex.ru/maps/org/shaurmaniya/110852738462/?ll=113.519168%2C52.031486&z=16.95",
-    },
-    {
-      address: "Улица Красной Звезды, 70/1",
-      info: "Северный м-н, Центральный район",
-      phone: "+7 (914) 515‒48‒46",
-      link2gis: "https://2gis.ru/chita/branches/70000001045033091/firm/70000001064444709/113.481655%2C52.076648?m=113.481655%2C52.076648%2F16",
-      linkYandex: "https://yandex.ru/maps/org/shaurmaniya/71390209311/?ll=113.481627%2C52.076665&z=16",
-    },
-    {
-      address: "Улица Новобульварная, 92 киоск",
-      info: "Центральный район",
-      phone: "+7 (914) 516‒96‒78",
-      link2gis: "https://2gis.ru/chita/branches/70000001045033091/firm/70000001045033092/113.487478%2C52.055444?m=113.487478%2C52.055444%2F16",
-      linkYandex: "https://yandex.ru/maps/org/shaurma/99059296595/?indoorLevel=1&ll=113.485975%2C52.056147&z=16.95",
-    },
-  ]
+  const branches = branchesData as Branch[]
 
   return (
     <footer className="relative z-10 bg-[#E73F22] text-white">
@@ -42,18 +30,14 @@ export function Footer() {
           <div>
             <h3 className="mb-4 text-lg font-semibold">Время работы</h3>
             <div className="space-y-2 text-sm text-white/80">
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-white" />
-                <span>Ул. Столярова, 83: с 10:00 до 23:00</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-white" />
-                <span>Ул. Красной Звезды, 70/1: с 10:00 до 23:00</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-white" />
-                <span>Ул. Новобульварная, 92 киоск: с 10:00 до 23:00</span>
-              </div>
+              {branches.slice(0, 3).map((branch) => (
+                <div key={`hours-${branch.address}`} className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-white" />
+                  <span>
+                    {branch.address}: {branch.schedule || "Уточняйте по телефону"}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -61,21 +45,13 @@ export function Footer() {
           <div>
             <h3 className="mb-4 text-lg font-semibold">Контакты</h3>
             <div className="space-y-2 text-sm text-white/80">
-              <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-white" />
-                <span>Ул. Столярова, 83: +7 (914) 510‒91‒80</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-white" />
-                <span>Ул. Красной Звезды, 70/1: +7 (914) 515‒48‒46</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Phone className="h-4 w-4 text-white" />
-                <span>Ул. Новобульварная, 92 киоск: +7 (914) 516‒96‒78</span>
-              </div>
-              <p className="leading-relaxed">
-                Оформите заказ через наш сайт, и мы доставим вашу шаурму горячей и свежей!
-              </p>
+              {branches.slice(0, 3).map((branch) => (
+                <div key={`phone-${branch.address}`} className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 text-white" />
+                  <span>{branch.address}: {branch.phone}</span>
+                </div>
+              ))}
+              <p className="leading-relaxed">Оформите заказ через наш сайт, и мы доставим вашу шаурму горячей и свежей!</p>
             </div>
           </div>
         </div>
@@ -83,38 +59,53 @@ export function Footer() {
         {/* Branches Section */}
         <div className="mt-12">
           <h3 className="mb-6 text-xl font-semibold text-center">Наши филиалы</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4">
             {branches.map((branch, index) => (
               <div
-                key={index}
+                key={`${branch.address}-${index}`}
                 className="group flex flex-col overflow-hidden rounded-xl bg-white text-black transition-all hover:shadow-lg h-full"
               >
                 <div className="flex flex-1 flex-col p-4">
-                  <h4 className="text-sm font-bold leading-tight line-clamp-2 mb-1">{branch.address}</h4>
-                  <p className="text-sm text-zinc-500 line-clamp-1 mb-2">{branch.info}</p>
+                  <h4 className="text-sm font-bold leading-tight line-clamp-2 mb-3">{branch.address}</h4>
 
-                  <div className="mt-auto flex flex-col gap-1">
-                    <div className="flex items-center gap-1">
-                      <Phone className="h-4 w-4 text-[#E73F22]" />
-                      <span className="text-sm font-medium whitespace-nowrap">{branch.phone}</span>
+                  <div className="space-y-2 mb-3">
+                    <div className="flex items-start gap-2 text-sm text-zinc-600">
+                      <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-[#E73F22]" />
+                      <span>{branch.district}</span>
                     </div>
-                    <div className="flex gap-2 text-sm">
-                      <a
-                        href={branch.link2gis}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-medium text-[#E73F22] hover:underline"
-                      >
-                        2Gis
-                      </a>
-                      <a
-                        href={branch.linkYandex}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-medium text-[#E73F22] hover:underline"
-                      >
-                        Яндекс
-                      </a>
+                    <div className="flex items-start gap-2 text-sm text-zinc-600">
+                      <Clock className="h-4 w-4 mt-0.5 shrink-0 text-[#E73F22]" />
+                      <span>{branch.schedule}</span>
+                    </div>
+                  </div>
+
+                  <div className="mt-auto flex flex-col gap-3">
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 shrink-0 text-[#E73F22]" />
+                      <span className="text-sm font-medium">{branch.phone}</span>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 text-sm">
+                      {branch.link2gis && (
+                        <a
+                          href={branch.link2gis}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-md border border-zinc-200 bg-white px-3 py-1.5 font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
+                        >
+                          2Gis
+                        </a>
+                      )}
+                      {branch.linkYandex && (
+                        <a
+                          href={branch.linkYandex}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-md border border-zinc-200 bg-white px-3 py-1.5 font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
+                        >
+                          Яндекс
+                        </a>
+                      )}
                     </div>
                   </div>
                 </div>
