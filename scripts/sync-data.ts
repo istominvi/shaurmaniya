@@ -40,6 +40,9 @@ const BRANCHES_DATA_FILE = path.join(process.cwd(), 'lib/branches.json');
 const BANNERS_DATA_FILE = path.join(process.cwd(), 'lib/banners.json');
 const PUBLIC_PRODUCTS_DIR = path.join(process.cwd(), 'public/products');
 const PUBLIC_BANNERS_DIR = path.join(process.cwd(), 'public/banners');
+const PRODUCT_IMAGE_WIDTH = 960;
+const BANNER_IMAGE_WIDTH = 1440;
+const BANNER_IMAGE_HEIGHT = 720;
 
 async function fetchCSV(url: string): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -154,8 +157,9 @@ async function downloadImage(url: string, filepath: string): Promise<boolean> {
       // Resize to width 800, maintain aspect ratio
       // Convert to WebP with 80% quality
       const transformer = sharp()
-        .resize({ width: 800, withoutEnlargement: true })
-        .webp({ quality: 80 });
+        .resize({ width: PRODUCT_IMAGE_WIDTH, withoutEnlargement: true, fit: 'inside' })
+        .sharpen({ sigma: 0.6 })
+        .webp({ quality: 86, effort: 6 });
 
       const fileStream = fs.createWriteStream(filepath);
 
@@ -194,8 +198,9 @@ async function downloadBannerImage(url: string, filepath: string): Promise<boole
       }
 
       const transformer = sharp()
-        .resize({ width: 1200, height: 600, fit: 'cover', position: 'centre', withoutEnlargement: true })
-        .webp({ quality: 85 });
+        .resize({ width: BANNER_IMAGE_WIDTH, height: BANNER_IMAGE_HEIGHT, fit: 'cover', position: 'centre', withoutEnlargement: true })
+        .sharpen({ sigma: 0.6 })
+        .webp({ quality: 88, effort: 6 });
 
       const fileStream = fs.createWriteStream(filepath);
 
@@ -250,7 +255,8 @@ async function syncProducts() {
       if (success) {
         imagePath = publicPath;
       } else {
-        console.warn(`[WARN] Using original URL for product ${id} due to download failure.`);
+        imagePath = getGoogleDriveImagePreviewLink(originalImage);
+        console.warn(`[WARN] Using fallback URL for product ${id} due to download failure: ${imagePath}`);
       }
     }
 

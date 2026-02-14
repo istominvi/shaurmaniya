@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
-import { cn } from "@/lib/utils"
+import { cn, getAssetPath } from "@/lib/utils"
 import bannersData from "@/lib/banners.json"
 
 interface Banner {
@@ -14,27 +14,8 @@ interface Banner {
   link: string
 }
 
-const getBannerImageUrl = (value: string) => {
-  if (!value) return value
+const BANNERS = bannersData as Banner[]
 
-  try {
-    const parsed = new URL(value)
-    const id = parsed.searchParams.get("id")
-
-    if (id && (parsed.hostname.includes("drive.google.com") || parsed.hostname.includes("drive.usercontent.google.com"))) {
-      return `https://drive.google.com/thumbnail?id=${id}&sz=w1600`
-    }
-  } catch {
-    return value
-  }
-
-  return value
-}
-
-const BANNERS = (bannersData as Banner[]).map((banner) => ({
-  ...banner,
-  image: getBannerImageUrl(banner.image),
-}))
 
 export function BannerCarousel() {
   const [api, setApi] = React.useState<CarouselApi>()
@@ -101,10 +82,10 @@ export function BannerCarousel() {
                   }
                 }}
               >
-                <div className="relative aspect-[2/1] rounded-2xl md:rounded-3xl bg-white">
+                <div className="relative aspect-[2/1] rounded-2xl md:rounded-3xl bg-white border border-white/50">
                   <div className="absolute inset-0 overflow-hidden rounded-2xl md:rounded-3xl">
                     <Image
-                      src={banner.image}
+                      src={getAssetPath(banner.image)}
                       alt={`Баннер ${index + 1}`}
                       fill
                       className="object-cover"
@@ -120,7 +101,7 @@ export function BannerCarousel() {
 
       {/* Navigation Dots */}
       {count > 1 && (
-      <div className="flex justify-center gap-2 mt-2">
+        <div className="flex justify-center gap-2 mt-2">
         {Array.from({ length: count }).map((_, index) => (
           <button
             key={index}
@@ -132,7 +113,7 @@ export function BannerCarousel() {
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
-      </div>
+        </div>
       )}
     </section>
   )
