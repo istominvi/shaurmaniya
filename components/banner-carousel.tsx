@@ -14,12 +14,34 @@ interface Banner {
   link: string
 }
 
-const BANNERS = bannersData as Banner[]
+const getBannerImageUrl = (value: string) => {
+  if (!value) return value
+
+  try {
+    const parsed = new URL(value)
+    const id = parsed.searchParams.get("id")
+
+    if (id && (parsed.hostname.includes("drive.google.com") || parsed.hostname.includes("drive.usercontent.google.com"))) {
+      return `https://drive.google.com/thumbnail?id=${id}&sz=w1600`
+    }
+  } catch {
+    return value
+  }
+
+  return value
+}
+
+const BANNERS = (bannersData as Banner[]).map((banner) => ({
+  ...banner,
+  image: getBannerImageUrl(banner.image),
+}))
 
 export function BannerCarousel() {
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
+
+  const shouldCenterSlides = BANNERS.length <= 2
 
   if (BANNERS.length === 0) {
     return null
@@ -44,7 +66,7 @@ export function BannerCarousel() {
         setApi={setApi}
         opts={{
           align: "center",
-          loop: true,
+          loop: !shouldCenterSlides,
         }}
         plugins={[
           Autoplay({
@@ -53,13 +75,16 @@ export function BannerCarousel() {
         ]}
         className="w-full"
       >
-        <CarouselContent className="-ml-2">
+        <CarouselContent className={cn("-ml-2", shouldCenterSlides && "justify-center")}>
           {BANNERS.map((banner, index) => (
             <CarouselItem
               key={banner.id}
-              className="pl-2 basis-[82%] md:basis-[70%] lg:basis-[60%] cursor-pointer"
+              className={cn(
+                "pl-2 basis-[82%] md:basis-[70%] lg:basis-[60%] cursor-pointer",
+                shouldCenterSlides && "max-w-[960px]"
+              )}
               onClick={() => {
-                if (!api) return
+                if (!api || shouldCenterSlides) return
                 if (index === (current - 1 + BANNERS.length) % BANNERS.length) {
                   api.scrollPrev()
                 } else if (index === (current + 1) % BANNERS.length) {
@@ -94,6 +119,7 @@ export function BannerCarousel() {
       </Carousel>
 
       {/* Navigation Dots */}
+      {count > 1 && (
       <div className="flex justify-center gap-2 mt-2">
         {Array.from({ length: count }).map((_, index) => (
           <button
@@ -107,6 +133,7 @@ export function BannerCarousel() {
           />
         ))}
       </div>
+      )}
     </section>
   )
 }

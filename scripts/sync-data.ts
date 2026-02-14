@@ -70,24 +70,50 @@ async function fetchCSV(url: string): Promise<string> {
   });
 }
 
+function getGoogleDriveFileId(url: string): string | null {
+  if (!url) return null;
+
+  const matchShare = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (matchShare?.[1]) {
+    return matchShare[1];
+  }
+
+  try {
+    const parsed = new URL(url);
+    const id = parsed.searchParams.get('id');
+    if (id) {
+      return id;
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
 function getGoogleDriveDirectLink(url: string): string | null {
   if (!url) return null;
 
-  // Handle standard share links: https://drive.google.com/file/d/VIEW_ID/view...
-  const matchShare = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-  if (matchShare && matchShare[1]) {
-    return `https://drive.google.com/uc?export=download&id=${matchShare[1]}`;
+  const fileId = getGoogleDriveFileId(url);
+  if (fileId) {
+    return `https://drive.google.com/uc?export=download&id=${fileId}`;
   }
 
-  // Handle drive-viewer links (Warning: likely to fail without auth, but we can't do much)
-  // These links usually expire or require cookies. We'll return null to treat them as generic URLs
-  // or log a warning.
   if (url.includes('drive-viewer')) {
     console.warn(`[WARN] Found 'drive-viewer' link. This usually requires authentication and cannot be downloaded by script: ${url}`);
     return null;
   }
 
-  return url; // Return original if not a Drive Share link
+  return url;
+}
+
+function getGoogleDriveImagePreviewLink(url: string): string {
+  const fileId = getGoogleDriveFileId(url);
+  if (!fileId) {
+    return url;
+  }
+
+  return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`;
 }
 
 function sanitizeCell(value: unknown): string {
@@ -299,7 +325,8 @@ async function syncBanners() {
     if (success) {
       image = publicPath;
     } else {
-      console.warn(`[WARN] Using original URL for banner ${id} due to download failure.`);
+      image = getGoogleDriveImagePreviewLink(imageUrl);
+      console.warn(`[WARN] Using fallback URL for banner ${id} due to download failure: ${image}`);
     }
 
     banners.push({
