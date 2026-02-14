@@ -6,34 +6,24 @@ import Link from "next/link"
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
 import { cn } from "@/lib/utils"
+import bannersData from "@/lib/banners.json"
 
-const BANNERS = [
-  {
-    id: 1,
-    image: "/beef-shawarma-with-pickles-and-sauce.jpg",
-    alt: "Вкусная говяжья шаурма",
-  },
-  {
-    id: 2,
-    image: "/delicious-shawarma-wrap-with-chicken-and-vegetable.jpg",
-    alt: "Куриная шаурма с овощами",
-  },
-  {
-    id: 3,
-    image: "/crispy-french-fries.png",
-    alt: "Хрустящий картофель фри",
-  },
-  {
-    id: 4,
-    image: "/shawarma-combo-with-fries-and-drink.jpg",
-    alt: "Комбо с шаурмой",
-  },
-]
+interface Banner {
+  id: string
+  image: string
+  link: string
+}
+
+const BANNERS = bannersData as Banner[]
 
 export function BannerCarousel() {
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
+
+  if (BANNERS.length === 0) {
+    return null
+  }
 
   React.useEffect(() => {
     if (!api) {
@@ -78,7 +68,7 @@ export function BannerCarousel() {
               }}
             >
               <Link
-                href="#"
+                href={banner.link || "#"}
                 className="block cursor-pointer h-full"
                 onClick={(e) => {
                   if (current !== index) {
@@ -86,14 +76,14 @@ export function BannerCarousel() {
                   }
                 }}
               >
-                <div className="relative aspect-[21/9] rounded-2xl md:rounded-3xl bg-white">
+                <div className="relative aspect-[2/1] rounded-2xl md:rounded-3xl bg-white">
                   <div className="absolute inset-0 overflow-hidden rounded-2xl md:rounded-3xl">
                     <Image
                       src={banner.image}
-                      alt={banner.alt}
+                      alt={`Баннер ${index + 1}`}
                       fill
                       className="object-cover"
-                      priority={banner.id === 1}
+                      priority={index === 0}
                     />
                   </div>
                 </div>
