@@ -63,17 +63,13 @@ export function Footer() {
       : { lat: 52.033333, lon: 113.5 }
 
   const mapPoints = branchCoordinates.map((point) => `${point.lon},${point.lat},pm2rdm`).join("~")
-  const staticMapParams = new URLSearchParams({
-    lang: "ru_RU",
-    l: "map",
+  const mapWidgetParams = new URLSearchParams({
     ll: `${center.lon},${center.lat}`,
     z: "11",
-    size: "650,320",
     pt: mapPoints,
   })
 
-  const cityMapUrl = `https://static-maps.yandex.ru/1.x/?${staticMapParams.toString()}`
-  const cityMapLink = `https://yandex.ru/maps/68/chita/?ll=${center.lon}%2C${center.lat}&z=11`
+  const mapWidgetUrl = `https://yandex.ru/map-widget/v1/?${mapWidgetParams.toString()}`
 
   return (
     <footer className="relative z-10 bg-[#E73F22] text-white">
@@ -121,15 +117,14 @@ export function Footer() {
         {/* Branches Section */}
         <div className="mt-12">
           <h3 className="mb-6 text-xl font-semibold text-center">Наши филиалы</h3>
-          <a
-            href={cityMapLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block overflow-hidden rounded-xl border border-white/25 bg-white/10"
-          >
-            <img src={cityMapUrl} alt="Карта Читы с отмеченными филиалами" className="h-[320px] w-full object-cover" loading="lazy" />
-          </a>
-          <p className="mt-2 text-center text-sm text-white/80">На карте отмечены все филиалы. Нажмите, чтобы открыть в Яндекс Картах.</p>
+          <div className="overflow-hidden rounded-xl border border-white/25 bg-white/10">
+            <iframe
+              src={mapWidgetUrl}
+              title="Интерактивная карта филиалов"
+              className="h-[320px] w-full"
+              loading="lazy"
+            />
+          </div>
 
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4">
             {branches.map((branch, index) => (
