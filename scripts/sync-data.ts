@@ -26,11 +26,20 @@ interface Branch {
   linkYandex: string;
 }
 
+interface Banner {
+  id: string;
+  image: string;
+  link: string;
+}
+
 const PRODUCTS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSF-SrUyWUFNrlauDFOomL9FIO9xYN2NhYcdkBTcmz1GP3P-FYgCreNtqgox_v2yG4ku8Uu7dmDaCNI/pub?gid=0&single=true&output=csv';
 const BRANCHES_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSF-SrUyWUFNrlauDFOomL9FIO9xYN2NhYcdkBTcmz1GP3P-FYgCreNtqgox_v2yG4ku8Uu7dmDaCNI/pub?gid=634697279&single=true&output=csv';
+const BANNERS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSF-SrUyWUFNrlauDFOomL9FIO9xYN2NhYcdkBTcmz1GP3P-FYgCreNtqgox_v2yG4ku8Uu7dmDaCNI/pub?gid=141207951&single=true&output=csv';
 const PRODUCTS_DATA_FILE = path.join(process.cwd(), 'lib/data.json');
 const BRANCHES_DATA_FILE = path.join(process.cwd(), 'lib/branches.json');
+const BANNERS_DATA_FILE = path.join(process.cwd(), 'lib/banners.json');
 const PUBLIC_PRODUCTS_DIR = path.join(process.cwd(), 'public/products');
+const PUBLIC_BANNERS_DIR = path.join(process.cwd(), 'public/banners');
 
 async function fetchCSV(url: string): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -142,6 +151,45 @@ async function downloadImage(url: string, filepath: string): Promise<boolean> {
   });
 }
 
+async function downloadBannerImage(url: string, filepath: string): Promise<boolean> {
+  const directUrl = getGoogleDriveDirectLink(url);
+  if (!directUrl) {
+    console.warn(`[SKIP] Could not determine direct URL for banner: ${url}`);
+    return false;
+  }
+
+  return new Promise((resolve) => {
+    https.get(directUrl, (response) => {
+      if (response.statusCode !== 200) {
+        console.error(`[ERROR] Failed to download banner image ${directUrl}: Status ${response.statusCode}`);
+        response.resume();
+        resolve(false);
+        return;
+      }
+
+      const transformer = sharp()
+        .resize({ width: 1200, height: 600, fit: 'cover', position: 'centre', withoutEnlargement: true })
+        .webp({ quality: 85 });
+
+      const fileStream = fs.createWriteStream(filepath);
+
+      pipeline(response, transformer, fileStream, (err) => {
+        if (err) {
+          console.error(`[ERROR] Error processing/saving banner image ${filepath}:`, err);
+          fs.unlink(filepath, () => {});
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      });
+
+    }).on('error', (err) => {
+      console.error(`[ERROR] Request failed for ${directUrl}:`, err.message);
+      resolve(false);
+    });
+  });
+}
+
 async function syncProducts() {
   const csvData = await fetchCSV(PRODUCTS_CSV_URL);
   const parsed = Papa.parse(csvData, { header: true, skipEmptyLines: true });
@@ -226,6 +274,45 @@ async function syncBranches() {
   console.log(`Successfully synced ${branches.length} branches to ${BRANCHES_DATA_FILE}`);
 }
 
+async function syncBanners() {
+  const csvData = await fetchCSV(BANNERS_CSV_URL);
+  const parsed = Papa.parse(csvData, { header: true, skipEmptyLines: true });
+  console.log('Banners CSV Fields:', parsed.meta.fields);
+
+  const rows = parsed.data as any[];
+  const banners: Banner[] = [];
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const imageUrl = sanitizeCell(row['Изображение']);
+    if (!imageUrl) {
+      continue;
+    }
+
+    const id = (i + 1).toString();
+    const filename = `${id}.webp`;
+    const localFilePath = path.join(PUBLIC_BANNERS_DIR, filename);
+    const publicPath = `/banners/${filename}`;
+
+    let image = imageUrl;
+    const success = await downloadBannerImage(imageUrl, localFilePath);
+    if (success) {
+      image = publicPath;
+    } else {
+      console.warn(`[WARN] Using original URL for banner ${id} due to download failure.`);
+    }
+
+    banners.push({
+      id,
+      image,
+      link: sanitizeCell(row['Ссылка']) || '#',
+    });
+  }
+
+  fs.writeFileSync(BANNERS_DATA_FILE, JSON.stringify(banners, null, 2));
+  console.log(`Successfully synced ${banners.length} banners to ${BANNERS_DATA_FILE}`);
+}
+
 async function main() {
   console.log('Starting data sync...');
 
@@ -234,9 +321,14 @@ async function main() {
     fs.mkdirSync(PUBLIC_PRODUCTS_DIR, { recursive: true });
   }
 
+  if (!fs.existsSync(PUBLIC_BANNERS_DIR)) {
+    fs.mkdirSync(PUBLIC_BANNERS_DIR, { recursive: true });
+  }
+
   try {
     await syncProducts();
     await syncBranches();
+    await syncBanners();
   } catch (error) {
     console.error('Sync failed:', error);
     process.exit(1);
