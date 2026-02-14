@@ -38,7 +38,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
   }
 
   return (
-    <div className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-all hover:shadow-lg">
+    <div className="group flex h-full flex-col overflow-hidden rounded-xl bg-card shadow-sm transition-all hover:shadow-lg">
       <div className="relative aspect-square w-full overflow-hidden rounded-xl">
         <Image
           src={getAssetPath(product.image || "/placeholder.svg")}

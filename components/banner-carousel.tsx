@@ -82,8 +82,8 @@ export function BannerCarousel() {
                   }
                 }}
               >
-                <div className="relative aspect-[2/1] rounded-2xl md:rounded-3xl bg-white border border-white/50">
-                  <div className="absolute inset-0 overflow-hidden rounded-2xl md:rounded-3xl">
+                <div className="relative aspect-[2/1] rounded-xl border border-white/50 bg-transparent">
+                  <div className="absolute inset-0 overflow-hidden rounded-xl">
                     <Image
                       src={getAssetPath(banner.image)}
                       alt={`Баннер ${index + 1}`}
