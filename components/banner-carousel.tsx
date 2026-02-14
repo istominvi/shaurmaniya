@@ -5,35 +5,28 @@ import Image from "next/image"
 import Link from "next/link"
 import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel"
 import Autoplay from "embla-carousel-autoplay"
-import { cn } from "@/lib/utils"
+import { cn, getAssetPath } from "@/lib/utils"
+import bannersData from "@/lib/banners.json"
 
-const BANNERS = [
-  {
-    id: 1,
-    image: "/beef-shawarma-with-pickles-and-sauce.jpg",
-    alt: "Вкусная говяжья шаурма",
-  },
-  {
-    id: 2,
-    image: "/delicious-shawarma-wrap-with-chicken-and-vegetable.jpg",
-    alt: "Куриная шаурма с овощами",
-  },
-  {
-    id: 3,
-    image: "/crispy-french-fries.png",
-    alt: "Хрустящий картофель фри",
-  },
-  {
-    id: 4,
-    image: "/shawarma-combo-with-fries-and-drink.jpg",
-    alt: "Комбо с шаурмой",
-  },
-]
+interface Banner {
+  id: string
+  image: string
+  link: string
+}
+
+const BANNERS = bannersData as Banner[]
+
 
 export function BannerCarousel() {
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
+
+  const shouldCenterSlides = BANNERS.length <= 2
+
+  if (BANNERS.length === 0) {
+    return null
+  }
 
   React.useEffect(() => {
     if (!api) {
@@ -54,7 +47,7 @@ export function BannerCarousel() {
         setApi={setApi}
         opts={{
           align: "center",
-          loop: true,
+          loop: !shouldCenterSlides,
         }}
         plugins={[
           Autoplay({
@@ -63,13 +56,16 @@ export function BannerCarousel() {
         ]}
         className="w-full"
       >
-        <CarouselContent className="-ml-2">
+        <CarouselContent className={cn("-ml-2", shouldCenterSlides && "justify-center")}>
           {BANNERS.map((banner, index) => (
             <CarouselItem
               key={banner.id}
-              className="pl-2 basis-[82%] md:basis-[70%] lg:basis-[60%] cursor-pointer"
+              className={cn(
+                "pl-2 basis-[82%] md:basis-[70%] lg:basis-[60%] cursor-pointer",
+                shouldCenterSlides && "max-w-[960px]"
+              )}
               onClick={() => {
-                if (!api) return
+                if (!api || shouldCenterSlides) return
                 if (index === (current - 1 + BANNERS.length) % BANNERS.length) {
                   api.scrollPrev()
                 } else if (index === (current + 1) % BANNERS.length) {
@@ -78,7 +74,7 @@ export function BannerCarousel() {
               }}
             >
               <Link
-                href="#"
+                href={banner.link || "#"}
                 className="block cursor-pointer h-full"
                 onClick={(e) => {
                   if (current !== index) {
@@ -86,14 +82,14 @@ export function BannerCarousel() {
                   }
                 }}
               >
-                <div className="relative aspect-[21/9] rounded-2xl md:rounded-3xl bg-white">
+                <div className="relative aspect-[2/1] rounded-2xl md:rounded-3xl bg-white border border-white/50">
                   <div className="absolute inset-0 overflow-hidden rounded-2xl md:rounded-3xl">
                     <Image
-                      src={banner.image}
-                      alt={banner.alt}
+                      src={getAssetPath(banner.image)}
+                      alt={`Баннер ${index + 1}`}
                       fill
                       className="object-cover"
-                      priority={banner.id === 1}
+                      priority={index === 0}
                     />
                   </div>
                 </div>
@@ -104,7 +100,8 @@ export function BannerCarousel() {
       </Carousel>
 
       {/* Navigation Dots */}
-      <div className="flex justify-center gap-2 mt-2">
+      {count > 1 && (
+        <div className="flex justify-center gap-2 mt-2">
         {Array.from({ length: count }).map((_, index) => (
           <button
             key={index}
@@ -116,7 +113,8 @@ export function BannerCarousel() {
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
-      </div>
+        </div>
+      )}
     </section>
   )
 }

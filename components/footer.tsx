@@ -116,7 +116,7 @@ export function Footer() {
 
         {/* Branches Section */}
         <div className="mt-12">
-          <h3 className="mb-6 text-xl font-semibold text-center">Наши филиалы</h3>
+          <h3 className="mb-6 text-xl font-semibold text-center">Наши филиалы в Чите</h3>
           <div className="overflow-hidden rounded-xl border border-white/25 bg-white/10">
             <iframe
               src={mapWidgetUrl}

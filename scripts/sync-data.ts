@@ -26,11 +26,23 @@ interface Branch {
   linkYandex: string;
 }
 
+interface Banner {
+  id: string;
+  image: string;
+  link: string;
+}
+
 const PRODUCTS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSF-SrUyWUFNrlauDFOomL9FIO9xYN2NhYcdkBTcmz1GP3P-FYgCreNtqgox_v2yG4ku8Uu7dmDaCNI/pub?gid=0&single=true&output=csv';
 const BRANCHES_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSF-SrUyWUFNrlauDFOomL9FIO9xYN2NhYcdkBTcmz1GP3P-FYgCreNtqgox_v2yG4ku8Uu7dmDaCNI/pub?gid=634697279&single=true&output=csv';
+const BANNERS_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSF-SrUyWUFNrlauDFOomL9FIO9xYN2NhYcdkBTcmz1GP3P-FYgCreNtqgox_v2yG4ku8Uu7dmDaCNI/pub?gid=141207951&single=true&output=csv';
 const PRODUCTS_DATA_FILE = path.join(process.cwd(), 'lib/data.json');
 const BRANCHES_DATA_FILE = path.join(process.cwd(), 'lib/branches.json');
+const BANNERS_DATA_FILE = path.join(process.cwd(), 'lib/banners.json');
 const PUBLIC_PRODUCTS_DIR = path.join(process.cwd(), 'public/products');
+const PUBLIC_BANNERS_DIR = path.join(process.cwd(), 'public/banners');
+const PRODUCT_IMAGE_WIDTH = 960;
+const BANNER_IMAGE_WIDTH = 1440;
+const BANNER_IMAGE_HEIGHT = 720;
 
 async function fetchCSV(url: string): Promise<string> {
   return new Promise((resolve, reject) => {
@@ -61,24 +73,50 @@ async function fetchCSV(url: string): Promise<string> {
   });
 }
 
+function getGoogleDriveFileId(url: string): string | null {
+  if (!url) return null;
+
+  const matchShare = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (matchShare?.[1]) {
+    return matchShare[1];
+  }
+
+  try {
+    const parsed = new URL(url);
+    const id = parsed.searchParams.get('id');
+    if (id) {
+      return id;
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
 function getGoogleDriveDirectLink(url: string): string | null {
   if (!url) return null;
 
-  // Handle standard share links: https://drive.google.com/file/d/VIEW_ID/view...
-  const matchShare = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
-  if (matchShare && matchShare[1]) {
-    return `https://drive.google.com/uc?export=download&id=${matchShare[1]}`;
+  const fileId = getGoogleDriveFileId(url);
+  if (fileId) {
+    return `https://drive.google.com/uc?export=download&id=${fileId}`;
   }
 
-  // Handle drive-viewer links (Warning: likely to fail without auth, but we can't do much)
-  // These links usually expire or require cookies. We'll return null to treat them as generic URLs
-  // or log a warning.
   if (url.includes('drive-viewer')) {
     console.warn(`[WARN] Found 'drive-viewer' link. This usually requires authentication and cannot be downloaded by script: ${url}`);
     return null;
   }
 
-  return url; // Return original if not a Drive Share link
+  return url;
+}
+
+function getGoogleDriveImagePreviewLink(url: string): string {
+  const fileId = getGoogleDriveFileId(url);
+  if (!fileId) {
+    return url;
+  }
+
+  return `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`;
 }
 
 function sanitizeCell(value: unknown): string {
@@ -119,8 +157,9 @@ async function downloadImage(url: string, filepath: string): Promise<boolean> {
       // Resize to width 800, maintain aspect ratio
       // Convert to WebP with 80% quality
       const transformer = sharp()
-        .resize({ width: 800, withoutEnlargement: true })
-        .webp({ quality: 80 });
+        .resize({ width: PRODUCT_IMAGE_WIDTH, withoutEnlargement: true, fit: 'inside' })
+        .sharpen({ sigma: 0.6 })
+        .webp({ quality: 86, effort: 6 });
 
       const fileStream = fs.createWriteStream(filepath);
 
@@ -129,6 +168,46 @@ async function downloadImage(url: string, filepath: string): Promise<boolean> {
         if (err) {
           console.error(`[ERROR] Error processing/saving image ${filepath}:`, err);
           fs.unlink(filepath, () => {}); // Clean up partial file
+          resolve(false);
+        } else {
+          resolve(true);
+        }
+      });
+
+    }).on('error', (err) => {
+      console.error(`[ERROR] Request failed for ${directUrl}:`, err.message);
+      resolve(false);
+    });
+  });
+}
+
+async function downloadBannerImage(url: string, filepath: string): Promise<boolean> {
+  const directUrl = getGoogleDriveDirectLink(url);
+  if (!directUrl) {
+    console.warn(`[SKIP] Could not determine direct URL for banner: ${url}`);
+    return false;
+  }
+
+  return new Promise((resolve) => {
+    https.get(directUrl, (response) => {
+      if (response.statusCode !== 200) {
+        console.error(`[ERROR] Failed to download banner image ${directUrl}: Status ${response.statusCode}`);
+        response.resume();
+        resolve(false);
+        return;
+      }
+
+      const transformer = sharp()
+        .resize({ width: BANNER_IMAGE_WIDTH, height: BANNER_IMAGE_HEIGHT, fit: 'cover', position: 'centre', withoutEnlargement: true })
+        .sharpen({ sigma: 0.6 })
+        .webp({ quality: 88, effort: 6 });
+
+      const fileStream = fs.createWriteStream(filepath);
+
+      pipeline(response, transformer, fileStream, (err) => {
+        if (err) {
+          console.error(`[ERROR] Error processing/saving banner image ${filepath}:`, err);
+          fs.unlink(filepath, () => {});
           resolve(false);
         } else {
           resolve(true);
@@ -176,7 +255,8 @@ async function syncProducts() {
       if (success) {
         imagePath = publicPath;
       } else {
-        console.warn(`[WARN] Using original URL for product ${id} due to download failure.`);
+        imagePath = getGoogleDriveImagePreviewLink(originalImage);
+        console.warn(`[WARN] Using fallback URL for product ${id} due to download failure: ${imagePath}`);
       }
     }
 
@@ -226,6 +306,46 @@ async function syncBranches() {
   console.log(`Successfully synced ${branches.length} branches to ${BRANCHES_DATA_FILE}`);
 }
 
+async function syncBanners() {
+  const csvData = await fetchCSV(BANNERS_CSV_URL);
+  const parsed = Papa.parse(csvData, { header: true, skipEmptyLines: true });
+  console.log('Banners CSV Fields:', parsed.meta.fields);
+
+  const rows = parsed.data as any[];
+  const banners: Banner[] = [];
+
+  for (let i = 0; i < rows.length; i++) {
+    const row = rows[i];
+    const imageUrl = sanitizeCell(row['Изображение']);
+    if (!imageUrl) {
+      continue;
+    }
+
+    const id = (i + 1).toString();
+    const filename = `${id}.webp`;
+    const localFilePath = path.join(PUBLIC_BANNERS_DIR, filename);
+    const publicPath = `/banners/${filename}`;
+
+    let image = imageUrl;
+    const success = await downloadBannerImage(imageUrl, localFilePath);
+    if (success) {
+      image = publicPath;
+    } else {
+      image = getGoogleDriveImagePreviewLink(imageUrl);
+      console.warn(`[WARN] Using fallback URL for banner ${id} due to download failure: ${image}`);
+    }
+
+    banners.push({
+      id,
+      image,
+      link: sanitizeCell(row['Ссылка']) || '#',
+    });
+  }
+
+  fs.writeFileSync(BANNERS_DATA_FILE, JSON.stringify(banners, null, 2));
+  console.log(`Successfully synced ${banners.length} banners to ${BANNERS_DATA_FILE}`);
+}
+
 async function main() {
   console.log('Starting data sync...');
 
@@ -234,9 +354,14 @@ async function main() {
     fs.mkdirSync(PUBLIC_PRODUCTS_DIR, { recursive: true });
   }
 
+  if (!fs.existsSync(PUBLIC_BANNERS_DIR)) {
+    fs.mkdirSync(PUBLIC_BANNERS_DIR, { recursive: true });
+  }
+
   try {
     await syncProducts();
     await syncBranches();
+    await syncBanners();
   } catch (error) {
     console.error('Sync failed:', error);
     process.exit(1);
