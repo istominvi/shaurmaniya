@@ -47,6 +47,7 @@ export function BannerCarousel() {
         setApi={setApi}
         opts={{
           align: "center",
+          containScroll: false,
           loop: shouldLoop,
         }}
         plugins={[
