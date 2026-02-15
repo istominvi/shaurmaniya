@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { Phone, MapPin, ExternalLink, Instagram, Store, Clock } from "lucide-react"
 import branchesData from "@/lib/branches.json"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -119,7 +120,7 @@ export function Footer() {
       <div className="w-full px-4 py-12 md:px-8">
         <div className="grid gap-10 border-b border-white/20 pb-10 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
           <div className="space-y-4">
-            <h3 className="text-2xl font-semibold tracking-tight">Шаурмания</h3>
+            <Image src="/images/logo_footer.svg" alt="Шаурмания" width={220} height={48} className="h-auto w-[220px]" priority />
             <p className="max-w-lg text-sm leading-relaxed text-white/85">
               Готовим шаурму, бургеры и закуски из свежих ингредиентов. Заберите заказ в ближайшем филиале или оформите
               доставку по Чите.
@@ -267,11 +268,6 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-6 space-y-1 py-2 text-sm text-white/80">
-          <p className="font-medium text-white">Контакты филиалов</p>
-          <p>Улица Бабушкина, 30, 1 этаж: +7 (914) 448-53-22</p>
-          <p>Улица Ленина, 83, 1 этаж: +7 (914) 500-77-20</p>
-        </div>
       </div>
     </footer>
   )
