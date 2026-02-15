@@ -17,7 +17,7 @@ interface CartDrawerProps {
 }
 
 export function CartDrawer({ open, onOpenChange, onCheckout, onLocationClick }: CartDrawerProps) {
-  const { items, total, updateQuantity, removeItem, location } = useCartStore()
+  const { items, deliveryFee, total, updateQuantity, removeItem, location } = useCartStore()
   const locationType = location?.type ?? "delivery"
   const LocationIcon = locationType === "delivery" ? Truck : Store
   const locationAddress = location?.address || (locationType === "delivery" ? "Адрес не указан" : "Адрес самовывоза не указан")
@@ -118,16 +118,19 @@ export function CartDrawer({ open, onOpenChange, onCheckout, onLocationClick }: 
 
         <div className="mt-auto border-t border-border bg-background p-6">
           <div className="space-y-3">
-            <div className="flex items-center justify-between gap-3 text-sm">
-              <Button
-                type="button"
-                className="h-9 border-border shadow-sm transition-colors active:border-none active:bg-[#E73F22] active:text-white"
-                onClick={onLocationClick}
-              >
-                <LocationIcon className="h-4 w-4" />
-                {locationType === "delivery" ? "Доставка" : "Самовывоз"}
-              </Button>
-              <span className="text-right text-xs text-muted-foreground line-clamp-2">{locationAddress}</span>
+            <div className="flex items-start justify-between gap-3 text-sm">
+              <div className="min-w-0 space-y-1">
+                <Button
+                  type="button"
+                  className="h-9 border-border shadow-sm transition-colors active:border-none active:bg-[#E73F22] active:text-white"
+                  onClick={onLocationClick}
+                >
+                  <LocationIcon className="h-4 w-4" />
+                  {locationType === "delivery" ? "Доставка" : "Самовывоз"}
+                </Button>
+                <p className="text-xs text-muted-foreground">{locationAddress}</p>
+              </div>
+              <span className="font-semibold whitespace-nowrap">{locationType === "delivery" ? deliveryFee : 0} ₽</span>
             </div>
             <Separator />
             <div className="flex items-center justify-between text-lg font-bold">
