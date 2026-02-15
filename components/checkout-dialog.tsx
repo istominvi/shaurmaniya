@@ -22,7 +22,6 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
-    email: "",
     comment: "",
   })
 
@@ -76,7 +75,7 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
       setTimeout(() => {
         clearCart()
         setIsSuccess(false)
-        setFormData({ name: "", phone: "", email: "", comment: "" })
+        setFormData({ name: "", phone: "", comment: "" })
         onOpenChange(false)
       }, 2000)
     } catch (error) {
@@ -151,17 +150,6 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
             />
           </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="email">Email (необязательно)</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="ivan@example.com"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              disabled={isSubmitting}
-            />
-          </div>
 
           <div className="space-y-2">
             <Label htmlFor="comment">Комментарий к заказу</Label>
