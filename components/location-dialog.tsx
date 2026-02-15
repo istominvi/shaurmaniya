@@ -46,7 +46,7 @@ export function LocationDialog({ open, onOpenChange }: LocationDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md rounded-3xl border-none shadow-xl">
+      <DialogContent className="sm:max-w-md rounded-xl border-none shadow-xl">
         <DialogHeader>
           <DialogTitle>Способ получения</DialogTitle>
           <DialogDescription>Выберите доставку или самовывоз</DialogDescription>
@@ -58,7 +58,7 @@ export function LocationDialog({ open, onOpenChange }: LocationDialogProps) {
               <div
                 className={`flex cursor-pointer flex-col gap-4 rounded-md border p-4 transition-all duration-300 ${
                   locationType === "delivery"
-                    ? "border-[#E73F22] bg-[#E73F22]/50"
+                    ? "border-[#E73F22] bg-white"
                     : "border-zinc-200 bg-white hover:bg-zinc-50"
                 }`}
                 onClick={() => setLocationType("delivery")}
@@ -98,7 +98,7 @@ export function LocationDialog({ open, onOpenChange }: LocationDialogProps) {
               <div
                 className={`flex cursor-pointer flex-col gap-4 rounded-md border p-4 transition-all duration-300 ${
                   locationType === "pickup"
-                    ? "border-[#E73F22] bg-[#E73F22]/50"
+                    ? "border-[#E73F22] bg-white"
                     : "border-zinc-200 bg-white hover:bg-zinc-50"
                 }`}
                 onClick={() => setLocationType("pickup")}
@@ -123,7 +123,7 @@ export function LocationDialog({ open, onOpenChange }: LocationDialogProps) {
                   <RadioGroup
                     value={selectedBranch}
                     onValueChange={setSelectedBranch}
-                    className="max-h-52 space-y-1 overflow-y-auto pr-2 [scrollbar-color:#E73F22_#e4e4e7] [scrollbar-width:thin] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#E73F22] [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-zinc-200 [&::-webkit-scrollbar]:w-2"
+                    className="max-h-52 space-y-1 overflow-y-auto pr-2"
                   >
                     {BRANCHES.map((branch) => (
                       <div key={branch} className="flex items-center space-x-2 py-1.5">
