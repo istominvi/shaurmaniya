@@ -56,7 +56,7 @@ export function ProductCard({ product, onAddToCart }: ProductCardProps) {
       <div className="flex flex-1 flex-col p-3">
         <h3 className="text-base font-semibold leading-tight text-card-foreground">{product.name}</h3>
         {product.description && (
-          <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{product.description}</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">{product.description}</p>
         )}
         <div className="mt-auto flex flex-col gap-1 pt-1">
           <div className="flex items-center justify-between">
