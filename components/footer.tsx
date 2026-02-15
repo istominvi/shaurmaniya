@@ -1,5 +1,9 @@
-import { Phone, Clock, MapPin, ExternalLink, Instagram } from "lucide-react"
+"use client"
+
+import { useState } from "react"
+import { Phone, MapPin, ExternalLink, Instagram, Store, Clock } from "lucide-react"
 import branchesData from "@/lib/branches.json"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 interface Branch {
   address: string
@@ -89,6 +93,7 @@ const TwoGisIcon = () => (
 )
 
 export function Footer() {
+  const [isBranchesOpen, setIsBranchesOpen] = useState(false)
   const branches = branchesData as Branch[]
   const branchCoordinates = branches.map(parseCoordinates).filter((point): point is BranchCoordinates => point !== null)
 
@@ -120,13 +125,8 @@ export function Footer() {
               доставку по Чите.
             </p>
             <div id="contacts" className="space-y-2 text-sm text-white/85">
-              <p className="font-medium text-white">Контакты филиалов</p>
-              {branches.slice(0, 2).map((branch) => (
-                <div key={`top-phone-${branch.address}`} className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 shrink-0" />
-                  <span>{branch.address}: {branch.phone}</span>
-                </div>
-              ))}
+              <p className="font-medium text-white">Контакты</p>
+              <p>Заказы принимаем ежедневно. Подробную информацию о филиалах смотрите в разделе «Наши филиалы».</p>
             </div>
           </div>
 
@@ -141,6 +141,76 @@ export function Footer() {
                 </li>
               ))}
             </ul>
+
+            <Dialog open={isBranchesOpen} onOpenChange={setIsBranchesOpen}>
+              <DialogTrigger asChild>
+                <button
+                  type="button"
+                  className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
+                >
+                  <Store className="h-4 w-4" />
+                  Наши филиалы
+                </button>
+              </DialogTrigger>
+              <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-5xl">
+                <DialogHeader>
+                  <DialogTitle>Наши филиалы в Чите</DialogTitle>
+                </DialogHeader>
+
+                <div className="overflow-hidden rounded-xl border border-border bg-muted/20">
+                  <iframe src={mapWidgetUrl} title="Интерактивная карта филиалов" className="h-[320px] w-full" loading="lazy" />
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {branches.map((branch, index) => (
+                    <div key={`${branch.address}-${index}`} className="rounded-xl border border-border bg-card p-4 text-card-foreground">
+                      <div className="space-y-3">
+                        <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#E73F22]" />
+                          <div>
+                            <p className="font-semibold text-foreground">{branch.address}</p>
+                            <p>{branch.district}</p>
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#E73F22]" />
+                          <span>{branch.schedule}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                          <Phone className="h-4 w-4 shrink-0 text-[#E73F22]" />
+                          <span>{branch.phone}</span>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 flex flex-wrap gap-2 text-sm">
+                        {branch.link2gis && (
+                          <a
+                            href={branch.link2gis}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="relative rounded-md border border-zinc-200 bg-white px-3 py-1.5 pr-6 font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
+                          >
+                            2Gis
+                            <ExternalLink className="absolute right-2 top-1.5 h-3 w-3 text-zinc-400" />
+                          </a>
+                        )}
+                        {branch.linkYandex && (
+                          <a
+                            href={branch.linkYandex}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="relative rounded-md border border-zinc-200 bg-white px-3 py-1.5 pr-6 font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
+                          >
+                            Яндекс
+                            <ExternalLink className="absolute right-2 top-1.5 h-3 w-3 text-zinc-400" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </DialogContent>
+            </Dialog>
           </div>
 
           <div>
@@ -197,69 +267,10 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12" id="about">
-          <h3 className="mb-6 text-center text-xl font-semibold">Наши филиалы в Чите</h3>
-          <div className="overflow-hidden rounded-xl bg-white/10">
-            <iframe src={mapWidgetUrl} title="Интерактивная карта филиалов" className="h-[320px] w-full" loading="lazy" />
-          </div>
-
-          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
-            {branches.map((branch, index) => (
-              <div
-                key={`${branch.address}-${index}`}
-                className="group flex h-full flex-col overflow-hidden rounded-xl bg-white text-black transition-all hover:shadow-lg"
-              >
-                <div className="flex flex-1 flex-col p-4">
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-2 text-sm text-zinc-600">
-                      <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#E73F22]" />
-                      <div className="min-w-0">
-                        <h4 className="line-clamp-2 text-sm font-bold leading-tight text-black">{branch.address}</h4>
-                        <p className="mt-1 pl-0 text-sm text-zinc-500">{branch.district}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start gap-2 text-sm text-zinc-600">
-                      <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#E73F22]" />
-                      <span>{branch.schedule}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Phone className="h-4 w-4 shrink-0 text-[#E73F22]" />
-                      <span className="text-sm text-zinc-700">{branch.phone}</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-auto flex flex-wrap gap-2 pt-3 text-sm">
-                    {branch.link2gis && (
-                      <a
-                        href={branch.link2gis}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="relative rounded-md border border-zinc-200 bg-white px-3 py-1.5 pr-6 font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
-                      >
-                        2Gis
-                        <ExternalLink className="absolute right-2 top-1.5 h-3 w-3 text-zinc-400" />
-                      </a>
-                    )}
-                    {branch.linkYandex && (
-                      <a
-                        href={branch.linkYandex}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="relative rounded-md border border-zinc-200 bg-white px-3 py-1.5 pr-6 font-medium text-zinc-700 transition-colors hover:bg-zinc-50"
-                      >
-                        Яндекс
-                        <ExternalLink className="absolute right-2 top-1.5 h-3 w-3 text-zinc-400" />
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-6 py-2 text-center text-sm text-white/60">
-          <p>© {new Date().getFullYear()} Шаурмания. Все права защищены.</p>
+        <div className="mt-6 space-y-1 py-2 text-sm text-white/80">
+          <p className="font-medium text-white">Контакты филиалов</p>
+          <p>Улица Бабушкина, 30, 1 этаж: +7 (914) 448-53-22</p>
+          <p>Улица Ленина, 83, 1 этаж: +7 (914) 500-77-20</p>
         </div>
       </div>
     </footer>
