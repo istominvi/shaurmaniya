@@ -9,12 +9,9 @@ import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useCartStore } from "@/hooks/use-cart-store"
 import type { LocationInfo } from "@/lib/types"
+import branches from "@/lib/branches.json"
 
-const BRANCHES = [
-  "Ул. Столярова, 83",
-  "Ул. Красной Звезды, 70/1",
-  "Ул. Новобульварная, 92 киоск",
-]
+const BRANCHES = branches.map((branch) => branch.address)
 
 interface LocationDialogProps {
   open: boolean
@@ -30,12 +27,13 @@ export function LocationDialog({ open, onOpenChange }: LocationDialogProps) {
   const [selectedBranch, setSelectedBranch] = useState(location?.type === "pickup" ? location?.address || "" : "")
 
   const handleSave = () => {
+    const trimmedAddress = address.trim()
     const newLocation: LocationInfo = {
       type: locationType,
     }
 
-    if (locationType === "delivery" && address) {
-      newLocation.address = address
+    if (locationType === "delivery" && trimmedAddress) {
+      newLocation.address = trimmedAddress
     } else if (locationType === "pickup" && selectedBranch) {
       newLocation.address = selectedBranch
     }
@@ -44,13 +42,11 @@ export function LocationDialog({ open, onOpenChange }: LocationDialogProps) {
     onOpenChange(false)
   }
 
-  const isSaveDisabled =
-    (locationType === "delivery" && !address) ||
-    (locationType === "pickup" && !selectedBranch);
+  const isSaveDisabled = (locationType === "delivery" && !address.trim()) || (locationType === "pickup" && !selectedBranch)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md rounded-xl border-none shadow-xl">
         <DialogHeader>
           <DialogTitle>Способ получения</DialogTitle>
           <DialogDescription>Выберите доставку или самовывоз</DialogDescription>
@@ -60,24 +56,50 @@ export function LocationDialog({ open, onOpenChange }: LocationDialogProps) {
           <RadioGroup value={locationType} onValueChange={(value) => setLocationType(value as "delivery" | "pickup")}>
             <div className="space-y-3">
               <div
-                className={`flex cursor-pointer items-start gap-4 rounded-lg border-2 p-4 transition-colors ${
-                  locationType === "delivery" ? "border-primary bg-primary/5" : "border-border hover:bg-accent"
+                className={`flex cursor-pointer flex-col gap-4 rounded-md border p-4 transition-all duration-300 ${
+                  locationType === "delivery"
+                    ? "border-[#E73F22] bg-white"
+                    : "border-zinc-200 bg-white hover:bg-zinc-50"
                 }`}
                 onClick={() => setLocationType("delivery")}
               >
-                <RadioGroupItem value="delivery" id="delivery" className="mt-1" />
-                <div className="flex-1">
-                  <Label htmlFor="delivery" className="flex cursor-pointer items-center gap-2 font-semibold">
-                    <Truck className="h-5 w-5" />
-                    Доставка
-                  </Label>
-                  <p className="mt-1 text-sm text-muted-foreground">Доставим по вашему адресу за 100 ₽</p>
+                <div className="flex items-start gap-4">
+                  <RadioGroupItem value="delivery" id="delivery" className="mt-1" />
+                  <div className="flex-1">
+                    <Label htmlFor="delivery" className="flex cursor-pointer items-center gap-2 font-semibold">
+                      <Truck className="h-5 w-5" />
+                      Доставка
+                    </Label>
+                    <p className="mt-1 text-sm text-muted-foreground">Доставим по вашему адресу за 100 ₽</p>
+                  </div>
+                </div>
+
+                <div
+                  className={`overflow-hidden pl-8 transition-all duration-300 ease-out ${
+                    locationType === "delivery" ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+                  }`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="space-y-2 pt-1">
+                    <Label htmlFor="address">
+                      Адрес доставки <span className="text-destructive">*</span>
+                    </Label>
+                    <Input
+                      id="address"
+                      placeholder="ул. Ленина, 45, кв. 10"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                    <p className="text-xs text-muted-foreground">Укажите улицу, дом, квартиру</p>
+                  </div>
                 </div>
               </div>
 
               <div
-                className={`flex flex-col cursor-pointer gap-4 rounded-lg border-2 p-4 transition-colors ${
-                  locationType === "pickup" ? "border-primary bg-primary/5" : "border-border hover:bg-accent"
+                className={`flex cursor-pointer flex-col gap-4 rounded-md border p-4 transition-all duration-300 ${
+                  locationType === "pickup"
+                    ? "border-[#E73F22] bg-white"
+                    : "border-zinc-200 bg-white hover:bg-zinc-50"
                 }`}
                 onClick={() => setLocationType("pickup")}
               >
@@ -92,40 +114,36 @@ export function LocationDialog({ open, onOpenChange }: LocationDialogProps) {
                   </div>
                 </div>
 
-                {locationType === "pickup" && (
-                  <div className="w-full pl-8" onClick={(e) => e.stopPropagation()}>
-                    <RadioGroup value={selectedBranch} onValueChange={setSelectedBranch}>
-                      {BRANCHES.map((branch) => (
-                        <div key={branch} className="flex items-center space-x-2 py-2">
-                          <RadioGroupItem value={branch} id={branch} />
-                          <Label htmlFor={branch} className="cursor-pointer text-sm font-normal">
-                            {branch}
-                          </Label>
-                        </div>
-                      ))}
-                    </RadioGroup>
-                  </div>
-                )}
+                <div
+                  className={`overflow-hidden pl-8 transition-all duration-300 ease-out ${
+                    locationType === "pickup" ? "max-h-72 opacity-100" : "max-h-0 opacity-0"
+                  }`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <RadioGroup
+                    value={selectedBranch}
+                    onValueChange={setSelectedBranch}
+                    className="max-h-52 space-y-1 overflow-y-auto pr-2"
+                  >
+                    {BRANCHES.map((branch) => (
+                      <div key={branch} className="flex items-center space-x-2 py-1.5">
+                        <RadioGroupItem value={branch} id={branch} />
+                        <Label htmlFor={branch} className="cursor-pointer text-sm font-normal">
+                          {branch}
+                        </Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                </div>
               </div>
             </div>
           </RadioGroup>
 
-          {locationType === "delivery" && (
-            <div className="space-y-2">
-              <Label htmlFor="address">
-                Адрес доставки <span className="text-destructive">*</span>
-              </Label>
-              <Input
-                id="address"
-                placeholder="ул. Ленина, 45, кв. 10"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-              <p className="text-xs text-muted-foreground">Укажите улицу, дом, квартиру</p>
-            </div>
-          )}
-
-          <Button className="w-full" onClick={handleSave} disabled={isSaveDisabled}>
+          <Button
+            className="h-9 w-full border-border shadow-sm transition-colors active:border-none active:bg-[#E73F22] active:text-white"
+            onClick={handleSave}
+            disabled={isSaveDisabled}
+          >
             Сохранить
           </Button>
         </div>
