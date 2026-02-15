@@ -76,7 +76,12 @@ export default function HomePage() {
         onOpenChange={(open) => !open && setSelectedProduct(null)}
       />
 
-      <CartDrawer open={isCartOpen} onOpenChange={setIsCartOpen} onCheckout={handleCheckout} />
+      <CartDrawer
+        open={isCartOpen}
+        onOpenChange={setIsCartOpen}
+        onCheckout={handleCheckout}
+        onLocationClick={() => setIsLocationOpen(true)}
+      />
 
       <CheckoutDialog open={isCheckoutOpen} onOpenChange={setIsCheckoutOpen} />
 

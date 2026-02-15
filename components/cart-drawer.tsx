@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react"
+import { Minus, Plus, ShoppingBag, Store, Trash2, Truck } from "lucide-react"
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -13,10 +13,14 @@ interface CartDrawerProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   onCheckout: () => void
+  onLocationClick: () => void
 }
 
-export function CartDrawer({ open, onOpenChange, onCheckout }: CartDrawerProps) {
-  const { items, subtotal, deliveryFee, total, updateQuantity, removeItem, location } = useCartStore()
+export function CartDrawer({ open, onOpenChange, onCheckout, onLocationClick }: CartDrawerProps) {
+  const { items, total, updateQuantity, removeItem, location } = useCartStore()
+  const locationType = location?.type ?? "delivery"
+  const LocationIcon = locationType === "delivery" ? Truck : Store
+  const locationAddress = location?.address || (locationType === "delivery" ? "Адрес не указан" : "Адрес самовывоза не указан")
 
   if (items.length === 0) {
     return (
@@ -84,20 +88,20 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: CartDrawerProps) 
                     )}
 
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
+                      <div className="flex h-8 items-center justify-between rounded-md bg-[#E73F22] border border-transparent px-0 text-white shadow-sm">
                         <Button
-                          variant="outline"
+                          variant="ghost"
                           size="icon"
-                          className="h-7 w-7 bg-transparent"
+                          className="h-8 w-8 rounded-md p-0 text-white hover:bg-white/10 hover:text-white"
                           onClick={() => updateQuantity(item.cartItemId, item.quantity - 1)}
                         >
                           <Minus className="h-3 w-3" />
                         </Button>
-                        <span className="min-w-8 text-center text-sm font-semibold">{item.quantity}</span>
+                        <span className="min-w-8 text-center text-sm font-semibold text-white">{item.quantity}</span>
                         <Button
-                          variant="outline"
+                          variant="ghost"
                           size="icon"
-                          className="h-7 w-7 bg-transparent"
+                          className="h-8 w-8 rounded-md p-0 text-white hover:bg-white/10 hover:text-white"
                           onClick={() => updateQuantity(item.cartItemId, item.quantity + 1)}
                         >
                           <Plus className="h-3 w-3" />
@@ -114,29 +118,28 @@ export function CartDrawer({ open, onOpenChange, onCheckout }: CartDrawerProps) 
 
         <div className="mt-auto border-t border-border bg-background p-6">
           <div className="space-y-3">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Сумма заказа</span>
-              <span className="font-medium">{subtotal} ₽</span>
+            <div className="flex items-center justify-between gap-3 text-sm">
+              <Button
+                type="button"
+                className="h-9 border-border shadow-sm transition-colors active:border-none active:bg-[#E73F22] active:text-white"
+                onClick={onLocationClick}
+              >
+                <LocationIcon className="h-4 w-4" />
+                {locationType === "delivery" ? "Доставка" : "Самовывоз"}
+              </Button>
+              <span className="text-right text-xs text-muted-foreground line-clamp-2">{locationAddress}</span>
             </div>
-            {deliveryFee > 0 && (
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Доставка</span>
-                <span className="font-medium">{deliveryFee} ₽</span>
-              </div>
-            )}
-            {location?.type === "pickup" && (
-              <div className="flex items-center justify-between text-sm">
-                <span className="text-muted-foreground">Самовывоз</span>
-                <span className="font-medium text-primary">Бесплатно</span>
-              </div>
-            )}
             <Separator />
             <div className="flex items-center justify-between text-lg font-bold">
               <span>Итого</span>
               <span>{total} ₽</span>
             </div>
 
-            <Button className="w-full" size="lg" onClick={onCheckout}>
+            <Button
+              className="w-full h-10 transition-colors active:bg-[#E73F22] active:text-white active:border-none border-border shadow-sm"
+              size="lg"
+              onClick={onCheckout}
+            >
               Оформить заказ
             </Button>
           </div>
