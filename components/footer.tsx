@@ -1,4 +1,4 @@
-import { Phone, Clock, MapPin, ExternalLink } from "lucide-react"
+import { Phone, Clock, MapPin, ExternalLink, Instagram } from "lucide-react"
 import branchesData from "@/lib/branches.json"
 
 interface Branch {
@@ -14,6 +14,31 @@ interface BranchCoordinates {
   lat: number
   lon: number
 }
+
+interface FooterLink {
+  label: string
+  href: string
+}
+
+const customerLinks: FooterLink[] = [
+  { label: "Акции", href: "#promotions" },
+  { label: "Калорийность и состав", href: "#nutrition" },
+  { label: "Контроль качества", href: "#quality-control" },
+  { label: "Контакты", href: "#contacts" },
+]
+
+const companyLinks: FooterLink[] = [
+  { label: "О нас", href: "#about" },
+  { label: "Поставщикам", href: "#suppliers" },
+  { label: "Предложить помещение", href: "#rent-offer" },
+  { label: "Работа", href: "#jobs" },
+]
+
+const legalLinks: FooterLink[] = [
+  { label: "Обработка персональных данных", href: "#privacy" },
+  { label: "Пользовательское соглашение", href: "#terms" },
+  { label: "Товарный знак", href: "#trademark" },
+]
 
 const parseCoordinates = (branch: Branch): BranchCoordinates | null => {
   const parseFromUrl = (value: string): BranchCoordinates | null => {
@@ -50,6 +75,19 @@ const parseCoordinates = (branch: Branch): BranchCoordinates | null => {
   return parseFromUrl(branch.linkYandex) || parseFromUrl(branch.link2gis)
 }
 
+const VkIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4" fill="currentColor">
+    <path d="M12.785 17.873h1.435s.433-.046.654-.275c.204-.211.197-.608.197-.608s-.028-1.857.836-2.13c.852-.27 1.946 1.794 3.107 2.587.878.6 1.544.468 1.544.468l3.102-.043s1.624-.101.853-1.379c-.063-.105-.453-.953-2.334-2.7-1.968-1.828-1.704-1.533.666-4.688 1.444-1.921 2.023-3.094 1.843-3.596-.172-.479-1.235-.353-1.235-.353l-3.494.022s-.259-.035-.451.078c-.188.111-.309.37-.309.37s-.553 1.47-1.29 2.721c-1.556 2.639-2.178 2.779-2.432 2.615-.59-.381-.443-1.53-.443-2.347 0-2.55.387-3.613-.754-3.889-.379-.091-.657-.151-1.626-.161-1.243-.013-2.294.004-2.89.296-.397.193-.703.625-.516.65.232.031.757.143 1.033.519.356.485.343 1.576.343 1.576s.205 3.001-.478 3.375c-.469.257-1.112-.267-2.495-2.662-.708-1.226-1.243-2.584-1.243-2.584s-.103-.251-.289-.386c-.226-.164-.542-.216-.542-.216L.633 5.43s-.524.015-.716.243c-.171.204-.014.624-.014.624s2.429 5.682 5.179 8.542c2.522 2.621 5.383 3.034 7.703 3.034Z" />
+  </svg>
+)
+
+const TwoGisIcon = () => (
+  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4" fill="none">
+    <rect x="2.5" y="2.5" width="19" height="19" rx="4" stroke="currentColor" strokeWidth="2" />
+    <path d="M7 9h6v2H9v2h3c1.66 0 3 1.34 3 3s-1.34 3-3 3H7v-2h5a1 1 0 1 0 0-2H9a2 2 0 0 1-2-2V9Zm10 0h-2v10h2V9Z" fill="currentColor" />
+  </svg>
+)
+
 export function Footer() {
   const branches = branchesData as Branch[]
   const branchCoordinates = branches.map(parseCoordinates).filter((point): point is BranchCoordinates => point !== null)
@@ -73,76 +111,115 @@ export function Footer() {
 
   return (
     <footer className="relative z-10 bg-[#E73F22] text-white">
-      <div className="w-full px-4 md:px-8 py-12">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {/* About Section */}
-          <div>
-            <h3 className="mb-4 text-lg font-semibold">О нас</h3>
-            <p className="text-sm text-white/80 leading-relaxed">
-              Шаурмания — сеть кафе быстрого питания в Чите. Мы готовим вкусную и качественную шаурму, бургеры и другие
-              блюда по доступным ценам.
+      <div className="w-full px-4 py-12 md:px-8">
+        <div className="grid gap-10 border-b border-white/20 pb-10 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
+          <div className="space-y-4">
+            <h3 className="text-2xl font-semibold tracking-tight">Шаурмания</h3>
+            <p className="max-w-lg text-sm leading-relaxed text-white/85">
+              Готовим шаурму, бургеры и закуски из свежих ингредиентов. Заберите заказ в ближайшем филиале или оформите
+              доставку по Чите.
             </p>
-          </div>
-
-          {/* Hours Section */}
-          <div>
-            <h3 className="mb-4 text-lg font-semibold">Время работы</h3>
-            <div className="space-y-2 text-sm text-white/80">
-              {branches.slice(0, 3).map((branch) => (
-                <div key={`hours-${branch.address}`} className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-white" />
-                  <span>
-                    {branch.address}: {branch.schedule || "Уточняйте по телефону"}
-                  </span>
+            <div id="contacts" className="space-y-2 text-sm text-white/85">
+              <p className="font-medium text-white">Контакты филиалов</p>
+              {branches.slice(0, 2).map((branch) => (
+                <div key={`top-phone-${branch.address}`} className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 shrink-0" />
+                  <span>{branch.address}: {branch.phone}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Contact Section */}
           <div>
-            <h3 className="mb-4 text-lg font-semibold">Контакты</h3>
-            <div className="space-y-2 text-sm text-white/80">
-              {branches.slice(0, 3).map((branch) => (
-                <div key={`phone-${branch.address}`} className="flex items-center gap-2">
-                  <Phone className="h-4 w-4 text-white" />
-                  <span>{branch.address}: {branch.phone}</span>
-                </div>
+            <h4 className="mb-4 text-base font-semibold">Покупателям</h4>
+            <ul className="space-y-3 text-sm text-white/85">
+              {customerLinks.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="transition-colors hover:text-white">
+                    {link.label}
+                  </a>
+                </li>
               ))}
-              <p className="leading-relaxed">Оформите заказ через наш сайт, и мы доставим вашу шаурму горячей и свежей!</p>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="mb-4 text-base font-semibold">Компания</h4>
+            <ul className="space-y-3 text-sm text-white/85">
+              {companyLinks.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="transition-colors hover:text-white">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="mb-4 text-base font-semibold">Документы</h4>
+            <ul className="space-y-3 text-sm text-white/85">
+              {legalLinks.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="transition-colors hover:text-white">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8" id="socials">
+              <p className="mb-3 text-sm font-semibold text-white">Мы в соцсетях</p>
+              <div className="flex flex-wrap gap-2">
+                <a
+                  href="#vk"
+                  aria-label="VK"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
+                >
+                  <VkIcon /> VK
+                </a>
+                <a
+                  href="#instagram"
+                  aria-label="Instagram"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
+                >
+                  <Instagram className="h-4 w-4" /> Instagram
+                </a>
+                <a
+                  href="#2gis"
+                  aria-label="2GIS"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
+                >
+                  <TwoGisIcon /> 2GIS
+                </a>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Branches Section */}
-        <div className="mt-12">
-          <h3 className="mb-6 text-xl font-semibold text-center">Наши филиалы в Чите</h3>
+        <div className="mt-12" id="about">
+          <h3 className="mb-6 text-center text-xl font-semibold">Наши филиалы в Чите</h3>
           <div className="overflow-hidden rounded-xl bg-white/10">
-            <iframe
-              src={mapWidgetUrl}
-              title="Интерактивная карта филиалов"
-              className="h-[320px] w-full"
-              loading="lazy"
-            />
+            <iframe src={mapWidgetUrl} title="Интерактивная карта филиалов" className="h-[320px] w-full" loading="lazy" />
           </div>
 
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4">
+          <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
             {branches.map((branch, index) => (
               <div
                 key={`${branch.address}-${index}`}
-                className="group flex flex-col overflow-hidden rounded-xl bg-white text-black transition-all hover:shadow-lg h-full"
+                className="group flex h-full flex-col overflow-hidden rounded-xl bg-white text-black transition-all hover:shadow-lg"
               >
                 <div className="flex flex-1 flex-col p-4">
                   <div className="space-y-3">
                     <div className="flex items-start gap-2 text-sm text-zinc-600">
-                      <MapPin className="h-4 w-4 mt-0.5 shrink-0 text-[#E73F22]" />
+                      <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#E73F22]" />
                       <div className="min-w-0">
-                        <h4 className="text-sm font-bold leading-tight line-clamp-2 text-black">{branch.address}</h4>
+                        <h4 className="line-clamp-2 text-sm font-bold leading-tight text-black">{branch.address}</h4>
                         <p className="mt-1 pl-0 text-sm text-zinc-500">{branch.district}</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-2 text-sm text-zinc-600">
-                      <Clock className="h-4 w-4 mt-0.5 shrink-0 text-[#E73F22]" />
+                      <Clock className="mt-0.5 h-4 w-4 shrink-0 text-[#E73F22]" />
                       <span>{branch.schedule}</span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -181,7 +258,6 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom Bar */}
         <div className="mt-6 py-2 text-center text-sm text-white/60">
           <p>© {new Date().getFullYear()} Шаурмания. Все права защищены.</p>
         </div>
