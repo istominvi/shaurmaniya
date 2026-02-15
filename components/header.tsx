@@ -1,6 +1,6 @@
 "use client"
 
-import { ShoppingBag, MapPin } from "lucide-react"
+import { ShoppingBag, Store, Truck } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useCartStore } from "@/hooks/use-cart-store"
@@ -16,6 +16,8 @@ export function Header({ onCartClick, onLocationClick }: HeaderProps) {
   const items = useCartStore((state) => state.items)
   const location = useCartStore((state) => state.location)
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
+  const locationType = location?.type ?? "delivery"
+  const LocationIcon = locationType === "delivery" ? Truck : Store
 
   return (
     <header className="sticky top-0 z-50 w-full bg-[#E73F22]">
@@ -33,8 +35,8 @@ export function Header({ onCartClick, onLocationClick }: HeaderProps) {
 
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" onClick={onLocationClick} className="gap-2 text-white hover:bg-white/10">
-            <MapPin className="h-4 w-4 text-white" />
-            <span className="hidden md:inline text-white">{location?.type === "delivery" ? "Доставка" : "Самовывоз"}</span>
+            <LocationIcon className="h-4 w-4 text-white" />
+            <span className="hidden md:inline text-white">{locationType === "delivery" ? "Доставка" : "Самовывоз"}</span>
           </Button>
 
           <Button variant="ghost" size="sm" onClick={onCartClick} className="relative gap-2 text-white hover:bg-white/10">
