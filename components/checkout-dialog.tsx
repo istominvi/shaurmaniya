@@ -108,9 +108,15 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
     )
   }
 
+  const locationDetails = location?.address
+    ? location.type === "pickup"
+      ? `Самовывоз - ${location.address}`
+      : `Доставка - ${location.address}`
+    : null
+
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md rounded-xl border-none shadow-xl">
         <DialogHeader>
           <DialogTitle>Оформление заказа</DialogTitle>
         </DialogHeader>
@@ -157,20 +163,6 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
             />
           </div>
 
-          {location?.type === "delivery" && location.address && (
-            <div className="rounded-lg border border-border bg-muted/50 p-3">
-              <p className="text-sm font-medium">Адрес доставки</p>
-              <p className="text-sm text-muted-foreground">{location.address}</p>
-            </div>
-          )}
-
-          {location?.type === "pickup" && location.address && (
-            <div className="rounded-lg border border-border bg-muted/50 p-3">
-              <p className="text-sm font-medium">Адрес самовывоза</p>
-              <p className="text-sm text-muted-foreground">{location.address}</p>
-            </div>
-          )}
-
           <div className="space-y-2">
             <Label htmlFor="comment">Комментарий к заказу</Label>
             <Textarea
@@ -183,6 +175,15 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
             />
           </div>
 
+          {locationDetails && (
+            <div className="space-y-2">
+              <Label>Способ получения</Label>
+              <div className="rounded-lg border border-border bg-muted/50 p-3">
+                <p className="text-sm text-muted-foreground">{locationDetails}</p>
+              </div>
+            </div>
+          )}
+
           <div className="rounded-lg border border-border bg-muted/50 p-4">
             <div className="flex items-center justify-between">
               <span className="font-semibold">Итого к оплате:</span>
@@ -191,7 +192,11 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
             <p className="mt-1 text-xs text-muted-foreground">Оплата наличными или картой при получении</p>
           </div>
 
-          <Button type="submit" className="w-full" size="lg" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            className="h-9 w-full border-border shadow-sm transition-colors active:border-none active:bg-[#E73F22] active:text-white"
+            disabled={isSubmitting}
+          >
             {isSubmitting ? "Отправка..." : "Подтвердить заказ"}
           </Button>
         </form>
