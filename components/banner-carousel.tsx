@@ -22,7 +22,7 @@ export function BannerCarousel() {
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
 
-  const shouldCenterSlides = BANNERS.length <= 2
+  const shouldLoop = BANNERS.length > 1
 
   if (BANNERS.length === 0) {
     return null
@@ -47,7 +47,8 @@ export function BannerCarousel() {
         setApi={setApi}
         opts={{
           align: "center",
-          loop: !shouldCenterSlides,
+          containScroll: false,
+          loop: shouldLoop,
         }}
         plugins={[
           Autoplay({
@@ -56,16 +57,13 @@ export function BannerCarousel() {
         ]}
         className="w-full"
       >
-        <CarouselContent className={cn("-ml-2", shouldCenterSlides && "justify-center")}>
+        <CarouselContent className="-ml-2">
           {BANNERS.map((banner, index) => (
             <CarouselItem
               key={banner.id}
-              className={cn(
-                "pl-2 basis-[82%] md:basis-[70%] lg:basis-[60%] cursor-pointer",
-                shouldCenterSlides && "max-w-[960px]"
-              )}
+              className="pl-2 basis-[80%] md:basis-[74%] lg:basis-[68%] cursor-pointer"
               onClick={() => {
-                if (!api || shouldCenterSlides) return
+                if (!api) return
                 if (index === (current - 1 + BANNERS.length) % BANNERS.length) {
                   api.scrollPrev()
                 } else if (index === (current + 1) % BANNERS.length) {
