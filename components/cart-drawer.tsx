@@ -17,9 +17,10 @@ interface CartDrawerProps {
 }
 
 export function CartDrawer({ open, onOpenChange, onCheckout, onLocationClick }: CartDrawerProps) {
-  const { items, deliveryFee, total, updateQuantity, removeItem, location } = useCartStore()
+  const { items, total, updateQuantity, removeItem, location } = useCartStore()
   const locationType = location?.type ?? "delivery"
   const LocationIcon = locationType === "delivery" ? Truck : Store
+  const locationAddress = location?.address || (locationType === "delivery" ? "Адрес не указан" : "Адрес самовывоза не указан")
 
   if (items.length === 0) {
     return (
@@ -117,22 +118,16 @@ export function CartDrawer({ open, onOpenChange, onCheckout, onLocationClick }: 
 
         <div className="mt-auto border-t border-border bg-background p-6">
           <div className="space-y-3">
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between gap-3 text-sm">
               <Button
                 type="button"
-                variant="ghost"
-                size="sm"
-                className="h-auto p-0 text-muted-foreground hover:bg-transparent hover:text-foreground"
+                className="h-9 border-border shadow-sm transition-colors active:border-none active:bg-[#E73F22] active:text-white"
                 onClick={onLocationClick}
               >
                 <LocationIcon className="h-4 w-4" />
                 {locationType === "delivery" ? "Доставка" : "Самовывоз"}
               </Button>
-              {locationType === "delivery" ? (
-                <span className="font-medium">{deliveryFee} ₽</span>
-              ) : (
-                <span className="font-medium text-primary">Бесплатно</span>
-              )}
+              <span className="text-right text-xs text-muted-foreground line-clamp-2">{locationAddress}</span>
             </div>
             <Separator />
             <div className="flex items-center justify-between text-lg font-bold">
