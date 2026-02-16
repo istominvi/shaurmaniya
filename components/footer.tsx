@@ -4,6 +4,7 @@ import { useState } from "react"
 import Image from "next/image"
 import { Phone, MapPin, ExternalLink, Instagram, Store, Clock } from "lucide-react"
 import branchesData from "@/lib/branches.json"
+import { getAssetPath } from "@/lib/utils"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 interface Branch {
@@ -120,13 +121,12 @@ export function Footer() {
         <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
           <div className="space-y-4">
             <Image
-              src="/images/logo_footer.svg"
+              src={getAssetPath("/images/logo_footer.svg")}
               alt="Шаурмания"
               width={220}
               height={48}
               className="h-auto w-[220px]"
               priority
-              unoptimized
             />
             <p className="max-w-lg text-sm leading-relaxed text-white/85">
               Готовим шаурму, бургеры и закуски из свежих ингредиентов. Заберите заказ в ближайшем филиале или оформите
