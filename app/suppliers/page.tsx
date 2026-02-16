@@ -98,7 +98,7 @@ export default function SuppliersPage() {
           <Button asChild variant="outline" className="rounded-full border-[#E73F22]/30 bg-white/85 text-[#E73F22] hover:bg-[#fff1ed]">
             <Link href="/">
               <ArrowLeft className="mr-1 h-4 w-4" />
-              Назад к меню
+              Назад
             </Link>
           </Button>
 
