@@ -6,10 +6,12 @@ import { useState } from "react"
 import { CheckCircle2 } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useCartStore } from "@/hooks/use-cart-store"
+import { PrivacyPolicyContent } from "@/components/privacy-policy-content"
 
 interface CheckoutDialogProps {
   open: boolean
@@ -19,6 +21,8 @@ interface CheckoutDialogProps {
 export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [isPolicyOpen, setIsPolicyOpen] = useState(false)
+  const [isPolicyAccepted, setIsPolicyAccepted] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -29,6 +33,11 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!isPolicyAccepted) {
+      return
+    }
+
     setIsSubmitting(true)
 
     const itemsText = items
@@ -75,6 +84,7 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
       setTimeout(() => {
         clearCart()
         setIsSuccess(false)
+        setIsPolicyAccepted(false)
         setFormData({ name: "", phone: "", comment: "" })
         onOpenChange(false)
       }, 2000)
@@ -172,6 +182,29 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
             </div>
           )}
 
+          <div className="space-y-2 rounded-lg border border-border bg-muted/30 p-3">
+            <div className="flex items-center gap-3">
+              <Checkbox
+                id="policy-consent"
+                checked={isPolicyAccepted}
+                onCheckedChange={(checked) => setIsPolicyAccepted(Boolean(checked))}
+                disabled={isSubmitting}
+              />
+              <div className="min-w-0 overflow-x-auto">
+                <span className="whitespace-nowrap text-sm leading-5 text-foreground">
+                  Я соглашаюсь с
+                  <button
+                    type="button"
+                    onClick={() => setIsPolicyOpen(true)}
+                    className="ml-1 inline font-medium text-[#E73F22] underline underline-offset-2"
+                  >
+                    политикой обработки персональных данных
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+
           <div className="rounded-lg border border-border bg-muted/50 p-4">
             <div className="flex items-center justify-between">
               <span className="font-semibold">Итого к оплате:</span>
@@ -183,12 +216,22 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
           <Button
             type="submit"
             className="h-9 w-full border-border shadow-sm transition-colors active:border-none active:bg-[#E73F22] active:text-white"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !isPolicyAccepted}
           >
             {isSubmitting ? "Отправка..." : "Подтвердить заказ"}
           </Button>
         </form>
       </DialogContent>
+
+      <Dialog open={isPolicyOpen} onOpenChange={setIsPolicyOpen}>
+        <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-4xl rounded-xl border-none shadow-xl">
+          <DialogHeader>
+            <DialogTitle>Политика обработки персональных данных</DialogTitle>
+          </DialogHeader>
+
+          <PrivacyPolicyContent />
+        </DialogContent>
+      </Dialog>
     </Dialog>
   )
 }
