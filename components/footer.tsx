@@ -28,7 +28,7 @@ interface FooterLink {
 
 const customerLinks: FooterLink[] = [
   { label: "Акции", href: "#promotions" },
-  { label: "Калорийность и состав", href: "/caloric" },
+  { label: "Калорийность", href: "/caloric" },
   { label: "Контроль качества", href: "/control" },
 ]
 
@@ -42,7 +42,6 @@ const companyLinks: FooterLink[] = [
 const legalLinks: FooterLink[] = [
   { label: "Обработка персональных данных", href: "#privacy" },
   { label: "Пользовательское соглашение", href: "#terms" },
-  { label: "Товарный знак", href: "#trademark" },
 ]
 
 const parseCoordinates = (branch: Branch): BranchCoordinates | null => {
@@ -122,16 +121,20 @@ export function Footer() {
             <div className="pt-2" id="socials">
               <div className="flex flex-wrap gap-2">
                 <a
-                  href="#vk"
+                  href="https://vk.com/shaurmaniya_chita"
                   aria-label="VK"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
                 >
                   <Image src={getAssetPath("/images/vk.svg")} alt="" width={16} height={16} className="h-4 w-4" aria-hidden="true" />
                   VK
                 </a>
                 <a
-                  href="#instagram"
+                  href="https://www.instagram.com/shaurmaniya_chita/"
                   aria-label="Instagram"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
                 >
                   <Image
@@ -145,8 +148,10 @@ export function Footer() {
                   Instagram
                 </a>
                 <a
-                  href="#2gis"
+                  href="https://2gis.ru/chita/branches/70000001044346497"
                   aria-label="2GIS"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
                 >
                   <Image src={getAssetPath("/images/2gis.svg")} alt="" width={16} height={16} className="h-4 w-4" aria-hidden="true" />
@@ -175,7 +180,7 @@ export function Footer() {
               <DialogTrigger asChild>
                 <button
                   type="button"
-                  className="mt-4 inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
+                  className="mt-4 inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
                 >
                   <Store className="h-4 w-4" />
                   Наши филиалы
