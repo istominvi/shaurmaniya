@@ -7,6 +7,7 @@ import branchesData from "@/lib/branches.json"
 import { getAssetPath } from "@/lib/utils"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { PrivacyPolicyContent } from "@/components/privacy-policy-content"
+import { TermsOfServiceContent } from "@/components/terms-of-service-content"
 
 interface Branch {
   address: string
@@ -77,6 +78,7 @@ const parseCoordinates = (branch: Branch): BranchCoordinates | null => {
 export function Footer() {
   const [isBranchesOpen, setIsBranchesOpen] = useState(false)
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false)
+  const [isTermsOpen, setIsTermsOpen] = useState(false)
   const branches = branchesData as Branch[]
   const branchCoordinates = branches.map(parseCoordinates).filter((point): point is BranchCoordinates => point !== null)
 
@@ -278,9 +280,19 @@ export function Footer() {
                 </Dialog>
               </li>
               <li>
-                <a href="#terms" className="transition-colors hover:text-white">
-                  Пользовательское соглашение
-                </a>
+                <Dialog open={isTermsOpen} onOpenChange={setIsTermsOpen}>
+                  <DialogTrigger asChild>
+                    <button type="button" className="cursor-pointer text-left transition-colors hover:text-white">
+                      Пользовательское соглашение
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-4xl">
+                    <DialogHeader>
+                      <DialogTitle>Пользовательское соглашение</DialogTitle>
+                    </DialogHeader>
+                    <TermsOfServiceContent />
+                  </DialogContent>
+                </Dialog>
               </li>
             </ul>
           </div>
