@@ -6,6 +6,7 @@ import { useState } from "react"
 import { CheckCircle2 } from "lucide-react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
@@ -19,6 +20,8 @@ interface CheckoutDialogProps {
 export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
+  const [isPolicyOpen, setIsPolicyOpen] = useState(false)
+  const [isPolicyAccepted, setIsPolicyAccepted] = useState(false)
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -29,6 +32,11 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!isPolicyAccepted) {
+      return
+    }
+
     setIsSubmitting(true)
 
     const itemsText = items
@@ -75,6 +83,7 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
       setTimeout(() => {
         clearCart()
         setIsSuccess(false)
+        setIsPolicyAccepted(false)
         setFormData({ name: "", phone: "", comment: "" })
         onOpenChange(false)
       }, 2000)
@@ -172,6 +181,28 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
             </div>
           )}
 
+          <div className="space-y-2 rounded-lg border border-border bg-muted/30 p-3">
+            <div className="flex items-start gap-3">
+              <Checkbox
+                id="policy-consent"
+                checked={isPolicyAccepted}
+                onCheckedChange={(checked) => setIsPolicyAccepted(Boolean(checked))}
+                disabled={isSubmitting}
+                className="mt-0.5"
+              />
+              <Label htmlFor="policy-consent" className="cursor-pointer text-sm leading-5">
+                Я соглашаюсь с{" "}
+                <button
+                  type="button"
+                  onClick={() => setIsPolicyOpen(true)}
+                  className="font-medium text-[#E73F22] underline underline-offset-2"
+                >
+                  политикой обработки персональных данных
+                </button>
+              </Label>
+            </div>
+          </div>
+
           <div className="rounded-lg border border-border bg-muted/50 p-4">
             <div className="flex items-center justify-between">
               <span className="font-semibold">Итого к оплате:</span>
@@ -183,12 +214,153 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
           <Button
             type="submit"
             className="h-9 w-full border-border shadow-sm transition-colors active:border-none active:bg-[#E73F22] active:text-white"
-            disabled={isSubmitting}
+            disabled={isSubmitting || !isPolicyAccepted}
           >
             {isSubmitting ? "Отправка..." : "Подтвердить заказ"}
           </Button>
         </form>
       </DialogContent>
+
+      <Dialog open={isPolicyOpen} onOpenChange={setIsPolicyOpen}>
+        <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-4xl rounded-xl border-none shadow-xl">
+          <DialogHeader>
+            <DialogTitle>Политика обработки персональных данных</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-5 text-sm leading-6 text-muted-foreground">
+            <div className="space-y-1">
+              <p className="text-foreground">сайта сети кафе «Шаурмания»</p>
+              <p>г. Чита</p>
+              <p>Редакция от «___» __________ 2026 г.</p>
+            </div>
+
+            <section className="space-y-2">
+              <h3 className="font-semibold text-foreground">1. Общие положения</h3>
+              <p>
+                Настоящая Политика обработки персональных данных (далее — Политика) определяет порядок обработки и
+                защиты персональных данных пользователей сайта сети кафе «Шаурмания» (далее — Сайт).
+              </p>
+              <p>Оператором персональных данных является:</p>
+              <p className="text-foreground">
+                <strong>[ИП/ООО «__________»]</strong>
+                <br />
+                ИНН: <strong>__________</strong>
+                <br />
+                Адрес регистрации: <strong>__________</strong>
+                <br />
+                E-mail для обращений: <strong>__________</strong>
+              </p>
+              <p>
+                Используя Сайт, а также оформляя заказ через Сайт, по телефону, мессенджеры (WhatsApp, Telegram) или
+                при доставке, Пользователь выражает согласие с настоящей Политикой и обработкой своих персональных
+                данных.
+              </p>
+              <p>Если Пользователь не согласен с условиями Политики, он должен прекратить использование Сайта и сервисов.</p>
+            </section>
+
+            <section className="space-y-2">
+              <h3 className="font-semibold text-foreground">2. Какие данные мы обрабатываем</h3>
+              <p>Мы обрабатываем только те данные, которые пользователь предоставляет добровольно:</p>
+              <ul className="list-disc space-y-1 pl-5">
+                <li>имя</li>
+                <li>номер телефона</li>
+                <li>адрес доставки</li>
+                <li>комментарий к заказу</li>
+              </ul>
+              <p>Также автоматически собираются технические данные:</p>
+              <ul className="list-disc space-y-1 pl-5">
+                <li>IP-адрес</li>
+                <li>cookies</li>
+                <li>данные о браузере и устройстве</li>
+                <li>сведения о посещении страниц сайта</li>
+              </ul>
+              <p>Эти данные собираются с помощью сервиса веб-аналитики Яндекс.Метрика.</p>
+              <p>Мы не обрабатываем специальные категории персональных данных (о здоровье, религии, политических взглядах и т.д.).</p>
+            </section>
+
+            <section className="space-y-2">
+              <h3 className="font-semibold text-foreground">3. Цели обработки персональных данных</h3>
+              <p>Персональные данные используются исключительно для:</p>
+              <ul className="list-disc space-y-1 pl-5">
+                <li>оформления и доставки заказа</li>
+                <li>связи с клиентом по заказу</li>
+                <li>уточнения адреса и времени доставки</li>
+                <li>предотвращения мошенничества</li>
+                <li>ведения внутреннего учета заказов</li>
+                <li>улучшения работы сайта</li>
+              </ul>
+              <p>Мы <strong className="text-foreground">не используем</strong> персональные данные для рекламных рассылок и не передаем их рекламным компаниям.</p>
+            </section>
+
+            <section className="space-y-2">
+              <h3 className="font-semibold text-foreground">4. Передача персональных данных</h3>
+              <p>Мы не продаем и не распространяем персональные данные.</p>
+              <p>Передача возможна только:</p>
+              <ul className="list-disc space-y-1 pl-5">
+                <li>сотрудникам, участвующим в приготовлении и доставке заказа</li>
+                <li>службам доставки (курьерам)</li>
+                <li>государственным органам — только в случаях, предусмотренных законом</li>
+              </ul>
+            </section>
+
+            <section className="space-y-2">
+              <h3 className="font-semibold text-foreground">5. Хранение и защита данных</h3>
+              <p>
+                Персональные данные хранятся только столько, сколько необходимо для выполнения заказа и требований
+                законодательства РФ (например, налогового учета).
+              </p>
+              <p>Мы принимаем необходимые организационные и технические меры для защиты данных от:</p>
+              <ul className="list-disc space-y-1 pl-5">
+                <li>утраты</li>
+                <li>изменения</li>
+                <li>несанкционированного доступа</li>
+                <li>распространения</li>
+              </ul>
+            </section>
+
+            <section className="space-y-2">
+              <h3 className="font-semibold text-foreground">6. Cookies и аналитика</h3>
+              <p>
+                На сайте используется сервис <strong className="text-foreground">Яндекс.Метрика</strong>, который
+                собирает обезличенные данные о посещениях сайта для анализа и улучшения работы.
+              </p>
+              <p>Сервис может использовать cookies. Пользователь может отключить cookies в настройках браузера.</p>
+            </section>
+
+            <section className="space-y-2">
+              <h3 className="font-semibold text-foreground">7. Права пользователя</h3>
+              <p>Пользователь имеет право:</p>
+              <ul className="list-disc space-y-1 pl-5">
+                <li>узнать, какие его данные обрабатываются</li>
+                <li>потребовать исправления данных</li>
+                <li>отозвать согласие на обработку персональных данных</li>
+                <li>потребовать удаление данных</li>
+              </ul>
+              <p>Для этого необходимо направить запрос на e-mail: <strong className="text-foreground">__________</strong>.</p>
+              <p>
+                Мы прекратим обработку персональных данных в течение 10 рабочих дней с момента получения обращения,
+                если иное не требуется законодательством.
+              </p>
+            </section>
+
+            <section className="space-y-2">
+              <h3 className="font-semibold text-foreground">8. Изменение политики</h3>
+              <p>Оператор вправе вносить изменения в настоящую Политику без предварительного уведомления.</p>
+              <p>Актуальная версия всегда размещается на сайте.</p>
+            </section>
+
+            <section className="space-y-2">
+              <h3 className="font-semibold text-foreground">9. Контакты</h3>
+              <p>По всем вопросам, связанным с обработкой персональных данных, вы можете обратиться:</p>
+              <p>
+                E-mail: <strong className="text-foreground">__________</strong>
+                <br />
+                Оператор: <strong className="text-foreground">[ИП/ООО «__________»]</strong>
+              </p>
+            </section>
+          </div>
+        </DialogContent>
+      </Dialog>
     </Dialog>
   )
 }
