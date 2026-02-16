@@ -29,7 +29,7 @@ interface FooterLink {
 const customerLinks: FooterLink[] = [
   { label: "Акции", href: "#promotions" },
   { label: "Калорийность и состав", href: "/caloric" },
-  { label: "Контроль качества", href: "#quality-control" },
+  { label: "Контроль качества", href: "/control" },
 ]
 
 const companyLinks: FooterLink[] = [
