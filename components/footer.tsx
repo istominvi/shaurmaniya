@@ -36,7 +36,7 @@ const companyLinks: FooterLink[] = [
   { label: "О нас", href: "/about" },
   { label: "Поставщикам", href: "/suppliers" },
   { label: "Предложить помещение", href: "/offer" },
-  { label: "Работа", href: "#jobs" },
+  { label: "Работа", href: "/jobs" },
 ]
 
 const legalLinks: FooterLink[] = [
