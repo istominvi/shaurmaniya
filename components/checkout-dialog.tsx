@@ -190,8 +190,8 @@ export function CheckoutDialog({ open, onOpenChange }: CheckoutDialogProps) {
                 onCheckedChange={(checked) => setIsPolicyAccepted(Boolean(checked))}
                 disabled={isSubmitting}
               />
-              <div className="min-w-0 overflow-x-auto">
-                <span className="whitespace-nowrap text-sm leading-5 text-foreground">
+              <div className="min-w-0">
+                <span className="text-sm leading-5 text-foreground">
                   Я соглашаюсь с
                   <button
                     type="button"
