@@ -24,7 +24,7 @@ export function Header({ onCartClick, onLocationClick }: HeaderProps) {
     <header className="sticky top-0 z-50 w-full bg-[#E73F22]">
       <div className="w-full px-4 md:px-8 flex h-16 items-center justify-between">
         <div className="flex items-center min-w-0">
-          <Link href={getAssetPath("/")} className="cursor-pointer">
+          <Link href="/" className="cursor-pointer">
             <Image
               src={getAssetPath("/images/logo_header.svg")}
               alt="Шаурмания"
