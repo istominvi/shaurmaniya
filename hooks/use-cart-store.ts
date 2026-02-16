@@ -3,6 +3,7 @@ import { persist } from "zustand/middleware"
 import type { Cart, CartItem, LocationInfo, Product, ProductVariant, CartItemModifier } from "@/lib/types"
 
 interface CartStore extends Cart {
+  hasHydrated: boolean
   addItem: (product: Product, variant?: ProductVariant, modifiers?: CartItemModifier[], quantity?: number) => void
   removeItem: (cartItemId: string) => void
   updateQuantity: (cartItemId: string, quantity: number) => void
@@ -21,6 +22,7 @@ export const useCartStore = create<CartStore>()(
       deliveryFee: 0,
       total: 0,
       location: undefined,
+      hasHydrated: false,
 
       addItem: (product, variant, modifiers = [], quantity = 1) => {
         const cartItemId = `${product.id}-${variant?.id || "default"}-${Date.now()}`
@@ -106,6 +108,10 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: "shaurmania-cart",
+      onRehydrateStorage: () => (state) => {
+        state?.calculateTotals()
+        useCartStore.setState({ hasHydrated: true })
+      },
     },
   ),
 )

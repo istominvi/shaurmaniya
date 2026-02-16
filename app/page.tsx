@@ -25,12 +25,13 @@ export default function HomePage() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
 
   const location = useCartStore((state) => state.location)
+  const hasHydrated = useCartStore((state) => state.hasHydrated)
 
   useEffect(() => {
-    if (!location) {
+    if (hasHydrated && !location) {
       setIsLocationOpen(true)
     }
-  }, [location])
+  }, [hasHydrated, location])
 
   const uniqueCategories = [
     { id: "all", name: "Все" },
