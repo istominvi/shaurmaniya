@@ -33,8 +33,8 @@ const customerLinks: FooterLink[] = [
 ]
 
 const companyLinks: FooterLink[] = [
-  { label: "О нас", href: "#about" },
-  { label: "Поставщикам", href: "#suppliers" },
+  { label: "О нас", href: "/about" },
+  { label: "Поставщикам", href: "/suppliers" },
   { label: "Предложить помещение", href: "/offer" },
   { label: "Работа", href: "#jobs" },
 ]
@@ -247,7 +247,10 @@ export function Footer() {
             <ul className="space-y-3 text-sm text-white/85">
               {companyLinks.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="transition-colors hover:text-white">
+                  <a
+                    href={link.href.startsWith("/") ? getAssetPath(link.href) : link.href}
+                    className="transition-colors hover:text-white"
+                  >
                     {link.label}
                   </a>
                 </li>
