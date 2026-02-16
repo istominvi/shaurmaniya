@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import { Phone, MapPin, ExternalLink, Instagram, Store, Clock } from "lucide-react"
+import { Phone, MapPin, ExternalLink, Store, Clock } from "lucide-react"
 import branchesData from "@/lib/branches.json"
 import { getAssetPath } from "@/lib/utils"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -80,19 +80,6 @@ const parseCoordinates = (branch: Branch): BranchCoordinates | null => {
   return parseFromUrl(branch.linkYandex) || parseFromUrl(branch.link2gis)
 }
 
-const VkIcon = () => (
-  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4" fill="currentColor">
-    <path d="M12.785 17.873h1.435s.433-.046.654-.275c.204-.211.197-.608.197-.608s-.028-1.857.836-2.13c.852-.27 1.946 1.794 3.107 2.587.878.6 1.544.468 1.544.468l3.102-.043s1.624-.101.853-1.379c-.063-.105-.453-.953-2.334-2.7-1.968-1.828-1.704-1.533.666-4.688 1.444-1.921 2.023-3.094 1.843-3.596-.172-.479-1.235-.353-1.235-.353l-3.494.022s-.259-.035-.451.078c-.188.111-.309.37-.309.37s-.553 1.47-1.29 2.721c-1.556 2.639-2.178 2.779-2.432 2.615-.59-.381-.443-1.53-.443-2.347 0-2.55.387-3.613-.754-3.889-.379-.091-.657-.151-1.626-.161-1.243-.013-2.294.004-2.89.296-.397.193-.703.625-.516.65.232.031.757.143 1.033.519.356.485.343 1.576.343 1.576s.205 3.001-.478 3.375c-.469.257-1.112-.267-2.495-2.662-.708-1.226-1.243-2.584-1.243-2.584s-.103-.251-.289-.386c-.226-.164-.542-.216-.542-.216L.633 5.43s-.524.015-.716.243c-.171.204-.014.624-.014.624s2.429 5.682 5.179 8.542c2.522 2.621 5.383 3.034 7.703 3.034Z" />
-  </svg>
-)
-
-const TwoGisIcon = () => (
-  <svg viewBox="0 0 24 24" aria-hidden="true" className="h-4 w-4" fill="none">
-    <rect x="2.5" y="2.5" width="19" height="19" rx="4" stroke="currentColor" strokeWidth="2" />
-    <path d="M7 9h6v2H9v2h3c1.66 0 3 1.34 3 3s-1.34 3-3 3H7v-2h5a1 1 0 1 0 0-2H9a2 2 0 0 1-2-2V9Zm10 0h-2v10h2V9Z" fill="currentColor" />
-  </svg>
-)
-
 export function Footer() {
   const [isBranchesOpen, setIsBranchesOpen] = useState(false)
   const branches = branchesData as Branch[]
@@ -123,15 +110,52 @@ export function Footer() {
             <Image
               src={getAssetPath("/images/logo_footer.svg")}
               alt="Шаурмания"
-              width={220}
-              height={48}
-              className="h-auto w-[220px]"
+              width={154}
+              height={34}
+              className="h-auto w-[154px]"
               priority
             />
             <p className="max-w-lg text-sm leading-relaxed text-white/85">
               Готовим шаурму, бургеры и закуски из свежих ингредиентов. Заберите заказ в ближайшем филиале или оформите
               доставку по Чите.
             </p>
+
+            <div className="pt-2" id="socials">
+              <p className="mb-3 text-sm font-semibold text-white">Мы в соцсетях</p>
+              <div className="flex flex-wrap gap-2">
+                <a
+                  href="#vk"
+                  aria-label="VK"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
+                >
+                  <Image src={getAssetPath("/images/vk.svg")} alt="" width={16} height={16} className="h-4 w-4" aria-hidden="true" />
+                  VK
+                </a>
+                <a
+                  href="#instagram"
+                  aria-label="Instagram"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
+                >
+                  <Image
+                    src={getAssetPath("/images/instagram.svg")}
+                    alt=""
+                    width={16}
+                    height={16}
+                    className="h-4 w-4"
+                    aria-hidden="true"
+                  />
+                  Instagram
+                </a>
+                <a
+                  href="#2gis"
+                  aria-label="2GIS"
+                  className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
+                >
+                  <Image src={getAssetPath("/images/2gis.svg")} alt="" width={16} height={16} className="h-4 w-4" aria-hidden="true" />
+                  2GIS
+                </a>
+              </div>
+            </div>
           </div>
 
           <div>
@@ -241,33 +265,6 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-
-            <div className="mt-8" id="socials">
-              <p className="mb-3 text-sm font-semibold text-white">Мы в соцсетях</p>
-              <div className="flex flex-wrap gap-2">
-                <a
-                  href="#vk"
-                  aria-label="VK"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
-                >
-                  <VkIcon /> VK
-                </a>
-                <a
-                  href="#instagram"
-                  aria-label="Instagram"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
-                >
-                  <Instagram className="h-4 w-4" /> Instagram
-                </a>
-                <a
-                  href="#2gis"
-                  aria-label="2GIS"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/35 bg-white/10 px-3 py-2 text-sm font-medium transition hover:bg-white/20"
-                >
-                  <TwoGisIcon /> 2GIS
-                </a>
-              </div>
-            </div>
           </div>
         </div>
 
