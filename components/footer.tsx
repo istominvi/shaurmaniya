@@ -29,7 +29,6 @@ const customerLinks: FooterLink[] = [
   { label: "Акции", href: "#promotions" },
   { label: "Калорийность и состав", href: "#nutrition" },
   { label: "Контроль качества", href: "#quality-control" },
-  { label: "Контакты", href: "#contacts" },
 ]
 
 const companyLinks: FooterLink[] = [
@@ -118,17 +117,21 @@ export function Footer() {
   return (
     <footer className="relative z-10 bg-[#E73F22] text-white">
       <div className="w-full px-4 py-12 md:px-8">
-        <div className="grid gap-10 border-b border-white/20 pb-10 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
+        <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
           <div className="space-y-4">
-            <Image src="/images/logo_footer.svg" alt="Шаурмания" width={220} height={48} className="h-auto w-[220px]" priority />
+            <Image
+              src="/images/logo_footer.svg"
+              alt="Шаурмания"
+              width={220}
+              height={48}
+              className="h-auto w-[220px]"
+              priority
+              unoptimized
+            />
             <p className="max-w-lg text-sm leading-relaxed text-white/85">
               Готовим шаурму, бургеры и закуски из свежих ингредиентов. Заберите заказ в ближайшем филиале или оформите
               доставку по Чите.
             </p>
-            <div id="contacts" className="space-y-2 text-sm text-white/85">
-              <p className="font-medium text-white">Контакты</p>
-              <p>Заказы принимаем ежедневно. Подробную информацию о филиалах смотрите в разделе «Наши филиалы».</p>
-            </div>
           </div>
 
           <div>
