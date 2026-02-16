@@ -28,7 +28,7 @@ interface FooterLink {
 
 const customerLinks: FooterLink[] = [
   { label: "Акции", href: "#promotions" },
-  { label: "Калорийность и состав", href: "#nutrition" },
+  { label: "Калорийность и состав", href: "/caloric" },
   { label: "Контроль качества", href: "#quality-control" },
 ]
 
@@ -161,7 +161,10 @@ export function Footer() {
             <ul className="space-y-3 text-sm text-white/85">
               {customerLinks.map((link) => (
                 <li key={link.label}>
-                  <a href={link.href} className="transition-colors hover:text-white">
+                  <a
+                    href={link.href.startsWith("/") ? getAssetPath(link.href) : link.href}
+                    className="transition-colors hover:text-white"
+                  >
                     {link.label}
                   </a>
                 </li>
