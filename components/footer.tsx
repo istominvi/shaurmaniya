@@ -33,7 +33,7 @@ const customerLinks: FooterLink[] = [
 ]
 
 const companyLinks: FooterLink[] = [
-  { label: "О нас", href: "#about" },
+  { label: "О нас", href: "/about" },
   { label: "Поставщикам", href: "/suppliers" },
   { label: "Предложить помещение", href: "#rent-offer" },
   { label: "Работа", href: "#jobs" },
