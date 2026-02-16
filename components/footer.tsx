@@ -6,6 +6,7 @@ import { Phone, MapPin, ExternalLink, Store, Clock } from "lucide-react"
 import branchesData from "@/lib/branches.json"
 import { getAssetPath } from "@/lib/utils"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { PrivacyPolicyContent } from "@/components/privacy-policy-content"
 
 interface Branch {
   address: string
@@ -36,11 +37,6 @@ const companyLinks: FooterLink[] = [
   { label: "Поставщикам", href: "/suppliers" },
   { label: "Предложить помещение", href: "/offer" },
   { label: "Работа", href: "/jobs" },
-]
-
-const legalLinks: FooterLink[] = [
-  { label: "Обработка персональных данных", href: "#privacy" },
-  { label: "Пользовательское соглашение", href: "#terms" },
 ]
 
 const parseCoordinates = (branch: Branch): BranchCoordinates | null => {
@@ -80,6 +76,7 @@ const parseCoordinates = (branch: Branch): BranchCoordinates | null => {
 
 export function Footer() {
   const [isBranchesOpen, setIsBranchesOpen] = useState(false)
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false)
   const branches = branchesData as Branch[]
   const branchCoordinates = branches.map(parseCoordinates).filter((point): point is BranchCoordinates => point !== null)
 
@@ -265,13 +262,26 @@ export function Footer() {
           <div>
             <h4 className="mb-4 text-base font-semibold">Документы</h4>
             <ul className="space-y-3 text-sm text-white/85">
-              {legalLinks.map((link) => (
-                <li key={link.label}>
-                  <a href={link.href} className="transition-colors hover:text-white">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
+              <li>
+                <Dialog open={isPrivacyOpen} onOpenChange={setIsPrivacyOpen}>
+                  <DialogTrigger asChild>
+                    <button type="button" className="cursor-pointer text-left transition-colors hover:text-white">
+                      Обработка персональных данных
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="max-h-[85vh] overflow-y-auto sm:max-w-4xl">
+                    <DialogHeader>
+                      <DialogTitle>Политика обработки персональных данных</DialogTitle>
+                    </DialogHeader>
+                    <PrivacyPolicyContent />
+                  </DialogContent>
+                </Dialog>
+              </li>
+              <li>
+                <a href="#terms" className="transition-colors hover:text-white">
+                  Пользовательское соглашение
+                </a>
+              </li>
             </ul>
           </div>
         </div>
