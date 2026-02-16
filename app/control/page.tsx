@@ -85,7 +85,7 @@ export default function ControlPage() {
               </div>
 
               <div className="relative min-h-[260px] bg-[#2b2b2b]">
-                <Image src={getAssetPath("/products/23.jpg")} alt="Контроль качества в Шаурмании" fill className="object-cover" priority />
+                <Image src={getAssetPath("/control/02.png")} alt="Контроль качества в Шаурмании" fill className="object-cover" priority />
               </div>
             </div>
           </div>
@@ -105,7 +105,7 @@ export default function ControlPage() {
           <section className="grid gap-4 md:grid-cols-3">
             <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white">
               <div className="relative aspect-[4/5]">
-                <Image src={getAssetPath("/products/21.jpg")} alt="Контроль стандартов приготовления" fill className="object-cover" />
+                <Image src={getAssetPath("/control/01.png")} alt="Контроль стандартов приготовления" fill className="object-cover" />
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-zinc-900">Чек-листы на каждой смене</h3>
@@ -115,7 +115,7 @@ export default function ControlPage() {
 
             <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white">
               <div className="relative aspect-[4/5]">
-                <Image src={getAssetPath("/products/24.jpg")} alt="Проверка качества продукции" fill className="object-cover" />
+                <Image src={getAssetPath("/control/03.png")} alt="Проверка качества продукции" fill className="object-cover" />
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-zinc-900">Контроль выдачи заказов</h3>
@@ -125,7 +125,7 @@ export default function ControlPage() {
 
             <div className="overflow-hidden rounded-2xl border border-zinc-200 bg-white">
               <div className="relative aspect-[4/5]">
-                <Image src={getAssetPath("/products/25.jpg")} alt="Качество сервиса и обратная связь" fill className="object-cover" />
+                <Image src={getAssetPath("/control/04.png")} alt="Качество сервиса и обратная связь" fill className="object-cover" />
               </div>
               <div className="p-4">
                 <h3 className="font-semibold text-zinc-900">Работа с обратной связью</h3>
